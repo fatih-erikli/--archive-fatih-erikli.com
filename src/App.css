@@ -12,9 +12,21 @@ body {
 }
 
 .editor {
+  width: 960px;
+  margin: auto;
+}
+
+.canvas-wrapper {
   width: 512px;
   float: left;
-  margin-bottom: 2em;
+}
+
+.tools {
+  float: left;
+}
+
+.preview {
+  margin: 0px 10px;
 }
 
 h1 {
@@ -31,13 +43,14 @@ h3 {
   float: left;
 }
 
-.preview {
-  float: left;
-}
-
 .preview-square {
   float: left;
-  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.download-link {
+  display: inline-block;
+  margin-bottom: 5px;
 }
 
 .drawing-info {
@@ -69,16 +82,70 @@ h1 a:hover {
   color: blue;
 }
 
-p, ul, footer {
-  font-size: 1.4em;
-}
-
 h1, ul, p, footer {
-  width: 900px;
+  width: 960px;
   margin: 1em auto 0.2em;
 }
 
 footer {
   text-align: center;
   margin-top: 2em;
+}
+
+.selection-rectangle {
+  fill: #92afff71;
+}
+
+.preview polygon {
+  stroke: black;
+}
+
+.color-picker {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+footer {
+  clear: both;
+  padding-top: 20px;
+}
+
+#page {
+  clear: both;
+}
+
+#page h1:first-child {
+  padding: 0;
+  margin: 0;
+  padding-top: 25px;
+}
+
+#page h1 {
+  font-size: 1.7em;
+}
+
+#page h2 {
+  font-size: 1.4em;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+}
+
+#page p {
+  margin: 0;
+}
+
+#bio {
+  clear: left;
+  padding: 10px;
+
+}
+
+#page ul {
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+#page li {
+  list-style: none;
 }
