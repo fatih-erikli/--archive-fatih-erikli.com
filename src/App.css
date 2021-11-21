@@ -114,14 +114,14 @@ footer {
   clear: both;
 }
 
-#page h1:first-child {
+h1#experiences-label {
   padding: 0;
   margin: 0;
   padding-top: 25px;
 }
 
 #page h1 {
-  font-size: 1.7em;
+  font-size: 1.4em;
 }
 
 #page h2 {
@@ -138,7 +138,9 @@ footer {
 #bio {
   clear: left;
   padding: 10px;
-
+  width: 350px;
+  color: rgb(12, 12, 12);
+  font-size: 1.3em;
 }
 
 #page ul {
