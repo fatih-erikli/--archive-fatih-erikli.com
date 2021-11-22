@@ -5,15 +5,12 @@ body {
 
 .app-container {
   margin: 2em;
+  width: 960px;
+  margin: auto;
 }
 
 .canvas {
   background-color: white;
-}
-
-.editor {
-  width: 960px;
-  margin: auto;
 }
 
 .canvas-wrapper {
@@ -96,13 +93,10 @@ footer {
   fill: #92afff71;
 }
 
-.preview polygon {
-  stroke: black;
-}
-
-.color-picker {
-  display: inline-block;
-  margin-left: 10px;
+.header-tools {
+  margin-top: -40px;
+  margin-bottom: 10px;
+  width: 436px;
 }
 
 footer {
@@ -140,7 +134,7 @@ h1#experiences-label {
   padding: 10px;
   width: 350px;
   color: rgb(123, 123, 123);
-  font-size: 1.3em;
+  font-size: 1.1em;
 }
 
 #page ul {
@@ -154,4 +148,19 @@ h1#experiences-label {
 
 .guideline {
   stroke: rgb(235, 235, 235);
+}
+
+.color-picker-preview {
+  border-radius: 5px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid silver;
+}
+
+.color-picker-label {
+  font-size: 15px;
+  color: gray;
+  margin-left: 5px;
 }
