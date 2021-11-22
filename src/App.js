@@ -32,7 +32,7 @@ const DRAW_STATE_MOVE_SELECTED_SEGMENTS = 13;
 const DRAW_STATE_SELECTION_SET = 14;
 
 const SHAPE_CLOSE_DISTANCE = 2;
-const SEGMENT_CIRCLE_RADIUS = 1;
+const SEGMENT_CIRCLE_RADIUS = 2;
 
 const DRAW_STATE_LABELS = {
   [DRAW_STATE_READY]: "Click on canvas and drag it to start drawing",
@@ -320,16 +320,17 @@ function handleMouseMove(
   selectionRectangle,
   setSelectionRectangle,
   mouseDownSelectionRectangle,
-  selectedPointIndexes
+  selectedPointIndexes,
 ) {
   return ({ clientX, clientY, target }) => {
     const clientRect = document
       .querySelector(".canvas")
       .getBoundingClientRect();
-    const cursorPosition = {
+    let cursorPosition = {
       x: clientX - clientRect.left,
       y: clientY - clientRect.top,
     };
+
     cursorPositionSetterFunction(cursorPosition);
 
     if (drawState === DRAW_STATE_MOVE_SEGMENT) {
@@ -617,7 +618,6 @@ function App() {
     a: 0.9,
   });
   const [showColorPicker, setShowColorPicker] = useState(false);
-  console.log(shapes);
   useEffect(() => {
     refreshShapesState();
     window.onpopstate = refreshShapesState;
@@ -662,7 +662,7 @@ function App() {
         selectionRectangle,
         setSelectionRectangle,
         mouseDownSelectionRectangle,
-        selectedPointIndexes
+        selectedPointIndexes,
       )}
       onMouseUp={continueDrawing(
         cursorPosition,
@@ -752,9 +752,7 @@ function App() {
                 key={`y-${index}`}
                 x1={0}
                 x2={512}
-                style={{
-                  stroke: "silver",
-                }}
+                className={'guideline'}
                 y1={index * 8}
                 y2={index * 8}
               />
@@ -764,9 +762,7 @@ function App() {
                 key={`x-${index}`}
                 y1={0}
                 y2={512}
-                style={{
-                  stroke: "silver",
-                }}
+                className={'guideline'}
                 x1={index * 8}
                 x2={index * 8}
               />
@@ -908,7 +904,7 @@ function App() {
                                 );
                               })()
                                 ? "blue"
-                                : "gray"
+                                : "silver"
                             }
                             r={SEGMENT_CIRCLE_RADIUS}
                           />
