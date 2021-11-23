@@ -335,6 +335,30 @@ const DRAW_STATE_LABELS = {
   [DRAW_STATE_SELECTION_SET]: "Selection set",
 };
 
+function handleContextMenu(
+  drawState,
+  drawStateSetterFunction,
+  showContextMenuSetterFunction,
+  cursorPosition,
+  contextMenuPositionSetterFunction,
+) {
+  return event => {
+    event.preventDefault();
+    const clientRect = document
+        .querySelector(".canvas")
+        .getBoundingClientRect();
+      const cursorPosition = {
+        x: event.clientX - clientRect.left,
+        y: event.clientY - clientRect.top,
+      };
+    contextMenuPositionSetterFunction({
+      x: cursorPosition.x + clientRect.left,
+      y: cursorPosition.y + clientRect.top,
+    });
+    showContextMenuSetterFunction(true);
+  }
+}
+
 function handleMouseDown(
   drawState,
   drawStateSetterFunction,
@@ -350,9 +374,16 @@ function handleMouseDown(
   mouseDownShapePointsSetterFunction,
   selectionRectangle,
   setMouseDownSelectionRectangle,
-  selectedPointIndexesSetterFunction
+  selectedPointIndexesSetterFunction,
+  contextMenuSetterFunction,
 ) {
   return (event) => {
+    contextMenuSetterFunction(false);
+    if (event.buttons === 2) {
+      event.preventDefault();
+      return false;
+    }
+
     if (drawState === DRAW_STATE_READY) {
       const clientRect = document
         .querySelector(".canvas")
@@ -937,6 +968,8 @@ function App() {
   });
   const [showFillColorPicker, setFillColorPicker] = useState(false);
   const [showStrokeColorPicker, setShowStrokeColorPicker] = useState(false);
+  const [showContextMenu, setShowContextMenu] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({x: -1, y: -1});
   useEffect(() => {
     refreshShapesState();
     window.onpopstate = refreshShapesState;
@@ -957,6 +990,7 @@ function App() {
       onKeyDown={handleKeyDown(setKeyStates)}
       onKeyUp={handleKeyUp(setKeyStates)}
       className="app-container"
+      onContextMenu={handleContextMenu(drawState, setDrawState, setShowContextMenu, cursorPosition, setContextMenuPosition)}
       onMouseDown={handleMouseDown(
         drawState,
         setDrawState,
@@ -972,7 +1006,8 @@ function App() {
         setMouseDownShapePoints,
         selectionRectangle,
         setMouseDownSelectionRectangle,
-        setSelectedPointIndexes
+        setSelectedPointIndexes,
+        setShowContextMenu,
       )}
       onMouseMove={handleMouseMove(
         setCursorPosition,
@@ -1097,6 +1132,14 @@ function App() {
               {DRAW_STATE_LABELS[drawState]}
             </span>
           </h3>
+          {showContextMenu && (
+            <div className={'context-menu'} style={{
+              top: contextMenuPosition.y,
+              left: contextMenuPosition.x,
+            }}>
+              context menu
+            </div>
+          )}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="canvas"
@@ -1376,14 +1419,6 @@ function App() {
             I created "arguman.org" in past. I study sociology in Istanbul
             University. I research about system engineering and create
             computational sociology models.
-            <br />
-            <img
-              style={{
-                float: "right",
-              }}
-              src="signature.png"
-              width={170}
-            />
           </div>
         </div>
         <h1 id="experiences-label">Experiences</h1>

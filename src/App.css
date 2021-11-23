@@ -164,3 +164,7 @@ h1#experiences-label {
   color: gray;
   margin-left: 5px;
 }
+
+.context-menu {
+  position: absolute;
+}
