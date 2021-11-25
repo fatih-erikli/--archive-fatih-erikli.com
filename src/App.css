@@ -85,7 +85,7 @@ h1, ul, p, footer {
 }
 
 footer {
-  text-align: center;
+  text-align: left;
   margin-top: 2em;
 }
 
@@ -167,4 +167,9 @@ h1#experiences-label {
 
 .context-menu {
   position: absolute;
+}
+
+a {
+  color: black;
+  margin-left: 2px;
 }
