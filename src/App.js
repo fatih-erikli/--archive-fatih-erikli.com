@@ -1,8 +1,275 @@
-import { useState, React, useEffect } from "react";
-import { ChromePicker as ColorPicker } from "react-color";
+import { useState, React, useEffect, useRef } from "react";
 import "./App.css";
 
-const INITIAL_SHAPES = [{"points":[{"x":151,"y":290.3000030517578},{"x":145,"y":270.3000030517578},{"x":141,"y":263.3000030517578},{"x":113,"y":214.3000030517578},{"x":113,"y":161.3000030517578},{"x":144,"y":137.3000030517578},{"x":159,"y":126.30000305175781},{"x":166,"y":123.30000305175781},{"x":145,"y":97.30000305175781},{"x":232,"y":58.30000305175781},{"isControlPoint":true,"x":260.1000061035156,"y":60.275001525878906},{"x":287.5,"y":62.30000305175781},{"x":304.5,"y":60.30000305175781},{"isControlPoint":true,"x":316.6000061035156,"y":45.775001525878906},{"x":344.5,"y":84.11666870117188},{"isControlPoint":true,"x":367.6000061035156,"y":87.2750015258789},{"x":382.20001220703125,"y":112.46665954589844},{"isControlPoint":true,"x":411.1000061035156,"y":119.55000305175781},{"x":417,"y":172.3000030517578},{"x":398.5,"y":218.11666870117188},{"x":379,"y":275.3000030517578},{"x":366,"y":338.3000030517578},{"x":366,"y":282.3000030517578},{"x":363,"y":267.3000030517578},{"x":344,"y":184.3000030517578},{"x":343.6000061035156,"y":183.85832977294922},{"isControlPoint":true,"x":275.1166687011719,"y":164.9000015258789},{"x":209,"y":173.3000030517578},{"x":172,"y":156.3000030517578},{"x":158,"y":216.3000030517578},{"x":159,"y":338.3000030517578},{"x":151,"y":290.3000030517578}],"fill":"rgba(240, 240, 240, 0.9)"},{"points":[{"x":249,"y":410.6333312988281},{"x":262,"y":412.066650390625},{"x":277,"y":409.6333312988281},{"x":270,"y":429.01666259765625},{"x":263,"y":433.6333312988281},{"x":254,"y":428.01666259765625},{"x":249,"y":410.6333312988281}],"fill":"rgba(244, 244, 244, 0.9)"},{"points":[{"x":215,"y":399.3833312988281},{"x":223,"y":387.3833312988281},{"x":254,"y":380.3833312988281},{"x":262,"y":377.3833312988281},{"x":268,"y":377.3833312988281},{"x":272,"y":380.3833312988281},{"x":280,"y":381.3833312988281},{"x":302,"y":385.3833312988281},{"x":312,"y":390.3833312988281},{"x":315,"y":397.3833312988281},{"x":317,"y":398.3833312988281},{"x":322,"y":389.3833312988281},{"x":313,"y":375.3833312988281},{"x":285,"y":365.3833312988281},{"x":279,"y":361.3833312988281},{"x":277,"y":359.3833312988281},{"x":269,"y":361.3833312988281},{"x":265,"y":361.3833312988281},{"x":260,"y":359.3833312988281},{"x":255,"y":358.3833312988281},{"x":251,"y":359.3833312988281},{"x":243,"y":365.3833312988281},{"x":229,"y":367.3833312988281},{"x":218,"y":371.3833312988281},{"x":210,"y":378.3833312988281},{"x":205,"y":390.3833312988281},{"x":208,"y":395.3833312988281},{"x":215,"y":399.3833312988281}],"fill":"rgba(240, 240, 240, 0.9)"},{"points":[{"x":276,"y":264.1000061035156},{"x":297,"y":259.1000061035156},{"x":316,"y":252.6999969482422},{"x":338,"y":253.10000610351562},{"x":355,"y":263.1000061035156},{"x":341,"y":244.10000610351562},{"x":329,"y":241.6999969482422},{"x":316,"y":242.10000610351562},{"x":292,"y":244.10000610351562},{"x":280,"y":249.10000610351562},{"x":276,"y":264.1000061035156}],"fill":"rgba(242, 242, 242, 0.9)"},{"points":[{"x":167,"y":270.1000061035156},{"x":185,"y":259.1000061035156},{"x":198,"y":256.6999969482422},{"x":216,"y":261.1000061035156},{"x":238,"y":267.1000061035156},{"x":238,"y":253.10000610351562},{"x":226,"y":247.6999969482422},{"x":214,"y":246.10000610351562},{"x":196,"y":245.6999969482422},{"x":180,"y":248.10000610351562},{"x":171,"y":255.10000610351562},{"x":167,"y":270.1000061035156}],"fill":"rgba(252, 252, 252, 0.9)"},{"points":[{"x":284,"y":284.3000030517578},{"x":295,"y":275.3000030517578},{"x":307,"y":273.3000030517578},{"x":323,"y":273.3000030517578},{"x":329,"y":275.9499969482422},{"x":338,"y":282.3000030517578},{"x":330.5,"y":278.91666412353516},{"x":328.5,"y":277.6500015258789},{"x":326,"y":276.3000030517578},{"x":311,"y":273.3000030517578},{"x":304,"y":274.3000030517578},{"x":297,"y":276.3000030517578},{"x":286,"y":284.3000030517578},{"x":284,"y":284.3000030517578}]},{"points":[{"x":282,"y":284.3000030517578},{"x":294,"y":287.3000030517578},{"x":302,"y":290.3000030517578},{"x":311,"y":290.3000030517578},{"x":319,"y":288.3000030517578},{"x":328,"y":283.3000030517578},{"x":336,"y":282.3000030517578},{"x":330,"y":284.3000030517578},{"x":326,"y":286.3000030517578},{"x":320,"y":290.3000030517578},{"x":316,"y":291.3000030517578},{"x":303,"y":292.3000030517578},{"x":294,"y":289.3000030517578},{"x":282,"y":284.3000030517578}]},{"points":[{"x":176,"y":287.3000030517578},{"x":186,"y":282.3000030517578},{"x":190,"y":280.3000030517578},{"x":195,"y":278.3000030517578},{"x":208,"y":278.3000030517578},{"x":211,"y":279.31666564941406},{"x":215,"y":281.3000030517578},{"x":225,"y":287.3000030517578},{"x":230,"y":289.3000030517578},{"x":234,"y":290.3000030517578},{"x":234,"y":289.3000030517578},{"x":229,"y":287.3000030517578},{"x":222,"y":284.3000030517578},{"x":215,"y":279.3000030517578},{"x":209,"y":276.3000030517578},{"x":201,"y":276.3000030517578},{"x":194,"y":276.3000030517578},{"x":184,"y":280.3000030517578},{"x":182,"y":282.3000030517578},{"x":176,"y":287.3000030517578}]},{"points":[{"x":229,"y":289.3000030517578},{"x":219,"y":292.3000030517578},{"x":214,"y":295.3000030517578},{"x":207,"y":295.8999938964844},{"x":200,"y":296.3000030517578},{"x":186,"y":294.6999969482422},{"x":182,"y":291.3000030517578},{"x":177,"y":287.3000030517578},{"x":183,"y":291.3000030517578},{"x":187,"y":293.3000030517578},{"x":201,"y":294.3000030517578},{"x":212,"y":294.3000030517578},{"x":219,"y":291.3000030517578},{"x":229,"y":289.3000030517578}]},{"points":[{"x":197,"y":281.3000030517578},{"x":196,"y":285},{"x":196,"y":289.3000030517578},{"x":198,"y":292.3000030517578},{"x":203,"y":294.3000030517578},{"x":203,"y":294.1500015258789},{"x":209,"y":293},{"x":212,"y":291},{"x":213,"y":287.3000030517578},{"x":212,"y":283.3000030517578},{"x":207,"y":280.3000030517578},{"x":203,"y":279.3000030517578},{"x":199,"y":280.3000030517578},{"x":197,"y":281.3000030517578}],"fill":"rgba(233, 233, 233, 1)"},{"points":[{"x":303,"y":277.3000030517578},{"x":303,"y":284.3000030517578},{"x":305,"y":288.3000030517578},{"x":311,"y":289.3000030517578},{"isControlPoint":true,"x":315.1000061035156,"y":288.2750015258789},{"x":315.1000061035156,"y":288.2750015258789},{"x":318,"y":285.3000030517578},{"x":318,"y":280.3000030517578},{"x":316,"y":276.3000030517578},{"x":311,"y":274.3000030517578},{"x":306,"y":275.3000030517578},{"x":303,"y":277.3000030517578}],"fill":"rgba(233, 233, 233, 0.9)"},{"points":[{"x":231,"y":393.29998779296875},{"x":253,"y":388.29998779296875},{"x":261,"y":387.29998779296875},{"x":265,"y":387.3000030517578},{"x":268,"y":387.29998779296875},{"x":277,"y":388.29998779296875},{"x":286,"y":390.29998779296875},{"x":294,"y":393.29998779296875},{"x":278,"y":391.29998779296875},{"x":273,"y":391.29998779296875},{"x":263,"y":391.29998779296875},{"x":254,"y":391.29998779296875},{"x":247,"y":392.29998779296875},{"x":239,"y":394.29998779296875},{"x":231,"y":393.29998779296875}]},{"points":[{"x":231,"y":391.4499969482422},{"x":240,"y":399.4499969482422},{"x":246,"y":400.3000030517578},{"x":252,"y":400.4499969482422},{"x":276,"y":400.4499969482422},{"x":285,"y":396.4499969482422},{"x":290,"y":394.21665954589844},{"x":294,"y":392.4499969482422},{"x":281,"y":395.4499969482422},{"x":277,"y":397.4499969482422},{"x":267,"y":398.4499969482422},{"x":252,"y":397.4499969482422},{"x":242,"y":397.4499969482422},{"x":231,"y":391.4499969482422}],"fill":"rgba(252, 252, 252, 0.9)"}];
+const INITIAL_SHAPES = [
+  {
+    points: [
+      { x: 151, y: 290.3000030517578 },
+      { x: 145, y: 270.3000030517578 },
+      { x: 141, y: 263.3000030517578 },
+      { x: 113, y: 214.3000030517578 },
+      { x: 113, y: 161.3000030517578 },
+      { x: 144, y: 137.3000030517578 },
+      { x: 159, y: 126.30000305175781 },
+      { x: 166, y: 123.30000305175781 },
+      { x: 145, y: 97.30000305175781 },
+      { x: 232, y: 58.30000305175781 },
+      { isControlPoint: true, x: 260.1000061035156, y: 60.275001525878906 },
+      { x: 287.5, y: 62.30000305175781 },
+      { x: 304.5, y: 60.30000305175781 },
+      { isControlPoint: true, x: 316.6000061035156, y: 45.775001525878906 },
+      { x: 344.5, y: 84.11666870117188 },
+      { isControlPoint: true, x: 367.6000061035156, y: 87.2750015258789 },
+      { x: 382.20001220703125, y: 112.46665954589844 },
+      { isControlPoint: true, x: 411.1000061035156, y: 119.55000305175781 },
+      { x: 417, y: 172.3000030517578 },
+      { x: 398.5, y: 218.11666870117188 },
+      { x: 379, y: 275.3000030517578 },
+      { x: 366, y: 338.3000030517578 },
+      { x: 366, y: 282.3000030517578 },
+      { x: 363, y: 267.3000030517578 },
+      { x: 344, y: 184.3000030517578 },
+      { x: 343.6000061035156, y: 183.85832977294922 },
+      { isControlPoint: true, x: 275.1166687011719, y: 164.9000015258789 },
+      { x: 209, y: 173.3000030517578 },
+      { x: 172, y: 156.3000030517578 },
+      { x: 158, y: 216.3000030517578 },
+      { x: 159, y: 338.3000030517578 },
+      { x: 151, y: 290.3000030517578 },
+    ],
+    fill: "rgba(240, 240, 240, 0.9)",
+  },
+  {
+    points: [
+      { x: 249, y: 410.6333312988281 },
+      { x: 262, y: 412.066650390625 },
+      { x: 277, y: 409.6333312988281 },
+      { x: 270, y: 429.01666259765625 },
+      { x: 263, y: 433.6333312988281 },
+      { x: 254, y: 428.01666259765625 },
+      { x: 249, y: 410.6333312988281 },
+    ],
+    fill: "rgba(244, 244, 244, 0.9)",
+  },
+  {
+    points: [
+      { x: 215, y: 399.3833312988281 },
+      { x: 223, y: 387.3833312988281 },
+      { x: 254, y: 380.3833312988281 },
+      { x: 262, y: 377.3833312988281 },
+      { x: 268, y: 377.3833312988281 },
+      { x: 272, y: 380.3833312988281 },
+      { x: 280, y: 381.3833312988281 },
+      { x: 302, y: 385.3833312988281 },
+      { x: 312, y: 390.3833312988281 },
+      { x: 315, y: 397.3833312988281 },
+      { x: 317, y: 398.3833312988281 },
+      { x: 322, y: 389.3833312988281 },
+      { x: 313, y: 375.3833312988281 },
+      { x: 285, y: 365.3833312988281 },
+      { x: 279, y: 361.3833312988281 },
+      { x: 277, y: 359.3833312988281 },
+      { x: 269, y: 361.3833312988281 },
+      { x: 265, y: 361.3833312988281 },
+      { x: 260, y: 359.3833312988281 },
+      { x: 255, y: 358.3833312988281 },
+      { x: 251, y: 359.3833312988281 },
+      { x: 243, y: 365.3833312988281 },
+      { x: 229, y: 367.3833312988281 },
+      { x: 218, y: 371.3833312988281 },
+      { x: 210, y: 378.3833312988281 },
+      { x: 205, y: 390.3833312988281 },
+      { x: 208, y: 395.3833312988281 },
+      { x: 215, y: 399.3833312988281 },
+    ],
+    fill: "rgba(240, 240, 240, 0.9)",
+  },
+  {
+    points: [
+      { x: 276, y: 264.1000061035156 },
+      { x: 297, y: 259.1000061035156 },
+      { x: 316, y: 252.6999969482422 },
+      { x: 338, y: 253.10000610351562 },
+      { x: 355, y: 263.1000061035156 },
+      { x: 341, y: 244.10000610351562 },
+      { x: 329, y: 241.6999969482422 },
+      { x: 316, y: 242.10000610351562 },
+      { x: 292, y: 244.10000610351562 },
+      { x: 280, y: 249.10000610351562 },
+      { x: 276, y: 264.1000061035156 },
+    ],
+    fill: "rgba(242, 242, 242, 0.9)",
+  },
+  {
+    points: [
+      { x: 167, y: 270.1000061035156 },
+      { x: 185, y: 259.1000061035156 },
+      { x: 198, y: 256.6999969482422 },
+      { x: 216, y: 261.1000061035156 },
+      { x: 238, y: 267.1000061035156 },
+      { x: 238, y: 253.10000610351562 },
+      { x: 226, y: 247.6999969482422 },
+      { x: 214, y: 246.10000610351562 },
+      { x: 196, y: 245.6999969482422 },
+      { x: 180, y: 248.10000610351562 },
+      { x: 171, y: 255.10000610351562 },
+      { x: 167, y: 270.1000061035156 },
+    ],
+    fill: "rgba(252, 252, 252, 0.9)",
+  },
+  {
+    points: [
+      { x: 284, y: 284.3000030517578 },
+      { x: 295, y: 275.3000030517578 },
+      { x: 307, y: 273.3000030517578 },
+      { x: 323, y: 273.3000030517578 },
+      { x: 329, y: 275.9499969482422 },
+      { x: 338, y: 282.3000030517578 },
+      { x: 330.5, y: 278.91666412353516 },
+      { x: 328.5, y: 277.6500015258789 },
+      { x: 326, y: 276.3000030517578 },
+      { x: 311, y: 273.3000030517578 },
+      { x: 304, y: 274.3000030517578 },
+      { x: 297, y: 276.3000030517578 },
+      { x: 286, y: 284.3000030517578 },
+      { x: 284, y: 284.3000030517578 },
+    ],
+  },
+  {
+    points: [
+      { x: 282, y: 284.3000030517578 },
+      { x: 294, y: 287.3000030517578 },
+      { x: 302, y: 290.3000030517578 },
+      { x: 311, y: 290.3000030517578 },
+      { x: 319, y: 288.3000030517578 },
+      { x: 328, y: 283.3000030517578 },
+      { x: 336, y: 282.3000030517578 },
+      { x: 330, y: 284.3000030517578 },
+      { x: 326, y: 286.3000030517578 },
+      { x: 320, y: 290.3000030517578 },
+      { x: 316, y: 291.3000030517578 },
+      { x: 303, y: 292.3000030517578 },
+      { x: 294, y: 289.3000030517578 },
+      { x: 282, y: 284.3000030517578 },
+    ],
+  },
+  {
+    points: [
+      { x: 176, y: 287.3000030517578 },
+      { x: 186, y: 282.3000030517578 },
+      { x: 190, y: 280.3000030517578 },
+      { x: 195, y: 278.3000030517578 },
+      { x: 208, y: 278.3000030517578 },
+      { x: 211, y: 279.31666564941406 },
+      { x: 215, y: 281.3000030517578 },
+      { x: 225, y: 287.3000030517578 },
+      { x: 230, y: 289.3000030517578 },
+      { x: 234, y: 290.3000030517578 },
+      { x: 234, y: 289.3000030517578 },
+      { x: 229, y: 287.3000030517578 },
+      { x: 222, y: 284.3000030517578 },
+      { x: 215, y: 279.3000030517578 },
+      { x: 209, y: 276.3000030517578 },
+      { x: 201, y: 276.3000030517578 },
+      { x: 194, y: 276.3000030517578 },
+      { x: 184, y: 280.3000030517578 },
+      { x: 182, y: 282.3000030517578 },
+      { x: 176, y: 287.3000030517578 },
+    ],
+  },
+  {
+    points: [
+      { x: 229, y: 289.3000030517578 },
+      { x: 219, y: 292.3000030517578 },
+      { x: 214, y: 295.3000030517578 },
+      { x: 207, y: 295.8999938964844 },
+      { x: 200, y: 296.3000030517578 },
+      { x: 186, y: 294.6999969482422 },
+      { x: 182, y: 291.3000030517578 },
+      { x: 177, y: 287.3000030517578 },
+      { x: 183, y: 291.3000030517578 },
+      { x: 187, y: 293.3000030517578 },
+      { x: 201, y: 294.3000030517578 },
+      { x: 212, y: 294.3000030517578 },
+      { x: 219, y: 291.3000030517578 },
+      { x: 229, y: 289.3000030517578 },
+    ],
+  },
+  {
+    points: [
+      { x: 197, y: 281.3000030517578 },
+      { x: 196, y: 285 },
+      { x: 196, y: 289.3000030517578 },
+      { x: 198, y: 292.3000030517578 },
+      { x: 203, y: 294.3000030517578 },
+      { x: 203, y: 294.1500015258789 },
+      { x: 209, y: 293 },
+      { x: 212, y: 291 },
+      { x: 213, y: 287.3000030517578 },
+      { x: 212, y: 283.3000030517578 },
+      { x: 207, y: 280.3000030517578 },
+      { x: 203, y: 279.3000030517578 },
+      { x: 199, y: 280.3000030517578 },
+      { x: 197, y: 281.3000030517578 },
+    ],
+    fill: "rgba(233, 233, 233, 1)",
+  },
+  {
+    points: [
+      { x: 303, y: 277.3000030517578 },
+      { x: 303, y: 284.3000030517578 },
+      { x: 305, y: 288.3000030517578 },
+      { x: 311, y: 289.3000030517578 },
+      { isControlPoint: true, x: 315.1000061035156, y: 288.2750015258789 },
+      { x: 315.1000061035156, y: 288.2750015258789 },
+      { x: 318, y: 285.3000030517578 },
+      { x: 318, y: 280.3000030517578 },
+      { x: 316, y: 276.3000030517578 },
+      { x: 311, y: 274.3000030517578 },
+      { x: 306, y: 275.3000030517578 },
+      { x: 303, y: 277.3000030517578 },
+    ],
+    fill: "rgba(233, 233, 233, 0.9)",
+  },
+  {
+    points: [
+      { x: 231, y: 393.29998779296875 },
+      { x: 253, y: 388.29998779296875 },
+      { x: 261, y: 387.29998779296875 },
+      { x: 265, y: 387.3000030517578 },
+      { x: 268, y: 387.29998779296875 },
+      { x: 277, y: 388.29998779296875 },
+      { x: 286, y: 390.29998779296875 },
+      { x: 294, y: 393.29998779296875 },
+      { x: 278, y: 391.29998779296875 },
+      { x: 273, y: 391.29998779296875 },
+      { x: 263, y: 391.29998779296875 },
+      { x: 254, y: 391.29998779296875 },
+      { x: 247, y: 392.29998779296875 },
+      { x: 239, y: 394.29998779296875 },
+      { x: 231, y: 393.29998779296875 },
+    ],
+  },
+  {
+    points: [
+      { x: 231, y: 391.4499969482422 },
+      { x: 240, y: 399.4499969482422 },
+      { x: 246, y: 400.3000030517578 },
+      { x: 252, y: 400.4499969482422 },
+      { x: 276, y: 400.4499969482422 },
+      { x: 285, y: 396.4499969482422 },
+      { x: 290, y: 394.21665954589844 },
+      { x: 294, y: 392.4499969482422 },
+      { x: 281, y: 395.4499969482422 },
+      { x: 277, y: 397.4499969482422 },
+      { x: 267, y: 398.4499969482422 },
+      { x: 252, y: 397.4499969482422 },
+      { x: 242, y: 397.4499969482422 },
+      { x: 231, y: 391.4499969482422 },
+    ],
+    fill: "rgba(252, 252, 252, 0.9)",
+  },
+];
 
 const reflect = (p, p0, p1) => {
   // https://gist.github.com/balint42/b99934b2a6990a53e14b
@@ -52,6 +319,9 @@ const DRAW_STATE_LABELS = {
   [DRAW_STATE_SELECTION_SET]: "Selection set",
 };
 
+const CONTEXT_MENU_ACTION_DUPLICATE = "Duplicate";
+const CONTEXT_MENU_ACTIONS = [CONTEXT_MENU_ACTION_DUPLICATE];
+
 function handleContextMenu(
   drawState,
   showContextMenuSetterFunction,
@@ -60,7 +330,7 @@ function handleContextMenu(
   shapesSetterFunction,
   drawStateSetterFunction,
   currentShapeIndex,
-  currentSegmentIndex,
+  currentSegmentIndex
 ) {
   return (event) => {
     event.preventDefault();
@@ -116,12 +386,18 @@ function handleMouseDown(
   selectionRectangle,
   setMouseDownSelectionRectangle,
   selectedPointIndexesSetterFunction,
-  contextMenuSetterFunction,
-  isMouseDownSetterFunction
+  isMouseDownSetterFunction,
+  showContextMenuSetterFunction,
+  showContextMenu
 ) {
   return (event) => {
     isMouseDownSetterFunction(true);
-    contextMenuSetterFunction(false);
+    if (event.target.dataset.isCanvas) {
+      showContextMenuSetterFunction(false);
+    }
+    if (event.target.dataset.isContextMenuAction || showContextMenu) {
+      return;
+    }
     if (event.buttons === 2) {
       event.preventDefault();
       return false;
@@ -380,9 +656,14 @@ function handleMouseMove(
   setSelectionRectangle,
   mouseDownSelectionRectangle,
   selectedPointIndexes,
-  isMouseDown
+  isMouseDown,
+  showContextMenu
 ) {
   return ({ clientX, clientY, target }) => {
+    if (showContextMenu) {
+      return;
+    }
+
     const clientRect = document
       .querySelector(".canvas")
       .getBoundingClientRect();
@@ -403,7 +684,7 @@ function handleMouseMove(
             (currentSegmentIndex === pointIndex ||
               (currentSegmentIndex === shape.points.length - 1 &&
                 pointIndex === 0))
-              ? {...point, ...cursorPosition}
+              ? { ...point, ...cursorPosition }
               : point
           ),
         }))
@@ -414,6 +695,9 @@ function handleMouseMove(
       if (isMouseDown) {
         const lastOpenShapeIndex = findLastOpenShapeIndex(shapes);
         const lastOpenShape = shapes[lastOpenShapeIndex];
+        if (!lastOpenShape) {
+          return drawStateSetterFunction(DRAW_STATE_READY);
+        }
         const isLastDrawnPointIsControlPoint =
           lastOpenShape.points.length > 2 &&
           Boolean(
@@ -580,6 +864,126 @@ function handleMouseMove(
   };
 }
 
+function handleContextMenuAction(
+  action,
+  shapes,
+  shapesSetterFunction,
+  currentShapeIndex,
+  showContextMenuSetterFunction
+) {
+  return () => {
+    switch (action) {
+      case CONTEXT_MENU_ACTION_DUPLICATE:
+        const currentShape = shapes[currentShapeIndex];
+        if (!currentShape) {
+          return;
+        }
+        shapesSetterFunction([
+          ...shapes,
+          {
+            ...currentShape,
+            points: currentShape.points.map((point) => ({
+              ...point,
+              x: point.x + 25,
+              y: point.y + 25,
+            })),
+          },
+        ]);
+        break;
+    }
+    showContextMenuSetterFunction(false);
+  };
+}
+
+function ColorInput({ color, onChange }) {
+  const [showPicker, setShowPicker] = useState(false);
+  const [currentWheelColor, setCurrentWheelColor] = useState(color);
+  const [currentShadeColor, setCurrentShadeColor] = useState(color);
+  const shadesRef = useRef(null);
+  const wheelRef = useRef(null);
+  useEffect(() => {
+    if (wheelRef.current) {
+      const wheelContext = wheelRef.current.getContext("2d");
+      const wheelGradient = wheelContext.createLinearGradient(0, 0, 0, 150);
+      wheelGradient.addColorStop(0, "rgba(255, 0, 0, 1)");
+      wheelGradient.addColorStop(0.17, "rgba(255, 255, 0, 1)");
+      wheelGradient.addColorStop(0.34, "rgba(0, 255, 0, 1)");
+      wheelGradient.addColorStop(0.51, "rgba(0, 255, 255, 1)");
+      wheelGradient.addColorStop(0.68, "rgba(0, 0, 255, 1)");
+      wheelGradient.addColorStop(0.85, "rgba(255, 0, 255, 1)");
+      wheelGradient.addColorStop(1, "rgba(255, 0, 0, 1)");
+      wheelContext.rect(0, 0, 30, 150);
+      wheelContext.fillStyle = wheelGradient;
+      wheelContext.fill();
+    }
+    if (shadesRef.current) {
+      const shadesContext = shadesRef.current.getContext("2d");
+      shadesContext.fillStyle = currentWheelColor;
+      shadesContext.fillRect(0, 0, 150, 150);
+      const whiteGradient = shadesContext.createLinearGradient(0, 0, 150, 0);
+      whiteGradient.addColorStop(0, "rgba(255,255,255,1)");
+      whiteGradient.addColorStop(1, "rgba(255,255,255,0)");
+      shadesContext.fillStyle = whiteGradient;
+      shadesContext.fillRect(0, 0, 150, 150);
+      const blackGradient = shadesContext.createLinearGradient(0, 0, 0, 150);
+      blackGradient.addColorStop(0, "rgba(0,0,0,0)");
+      blackGradient.addColorStop(1, "rgba(0,0,0,1)");
+      shadesContext.fillStyle = blackGradient;
+      shadesContext.fillRect(0, 0, 150, 150);
+    }
+  }, [showPicker, currentWheelColor]);
+  return (
+    <div className={"color-input"}>
+      <div
+        style={{
+          background: currentShadeColor,
+        }}
+        className={"color-input-preview"}
+        onClick={() => setShowPicker(!showPicker)}
+      ></div>
+      {showPicker && (
+        <div className={"color-input-picker"}>
+          <canvas
+            onMouseDown={(event) => {
+              const box = shadesRef.current.getBoundingClientRect();
+              const point = {
+                x: Math.floor(event.clientX - box.left),
+                y: Math.floor(event.clientY - box.top),
+              };
+              const [r, g, b, _] = shadesRef.current
+                .getContext("2d")
+                .getImageData(point.x, point.y, 1, 1).data;
+              setCurrentShadeColor(`rgba(${r}, ${g}, ${b}, 1)`);
+              onChange({ r, g, b, a: 1 });
+            }}
+            ref={shadesRef}
+            className={"color-input-shades"}
+            height="150"
+            width="150"
+          ></canvas>
+          <canvas
+            onMouseDown={(event) => {
+              const box = wheelRef.current.getBoundingClientRect();
+              const point = {
+                x: Math.floor(event.clientX - box.left),
+                y: Math.floor(event.clientY - box.top),
+              };
+              const [r, g, b, _] = wheelRef.current
+                .getContext("2d")
+                .getImageData(point.x, point.y, 1, 1).data;
+              setCurrentWheelColor(`rgba(${r}, ${g}, ${b}, 1)`);
+            }}
+            ref={wheelRef}
+            className={"color-input-wheel"}
+            height="150"
+            width="30"
+          ></canvas>
+        </div>
+      )}
+    </div>
+  );
+}
+
 let replaceStateTimeoutId;
 
 function useHashedState(name, defaults) {
@@ -721,6 +1125,10 @@ function parseRGBA(color) {
   };
 }
 
+function toRGBAString(color) {
+  return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+}
+
 function buildSVGPath(points, divider = 1) {
   let svgString = "";
   points.forEach(({ x, y, isControlPoint }, index) => {
@@ -787,8 +1195,6 @@ function App() {
     b: 238,
     a: 0.9,
   });
-  const [showFillColorPicker, setFillColorPicker] = useState(false);
-  const [showStrokeColorPicker, setShowStrokeColorPicker] = useState(false);
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({
     x: -1,
@@ -808,7 +1214,6 @@ function App() {
     fill && setCurrentFillColor(parseRGBA(fill));
     stroke && setCurrentStrokeColor(parseRGBA(stroke));
   }, [selectedShapeIndex]);
-  console.log(shapes);
   return (
     <div
       tabIndex={0}
@@ -823,7 +1228,7 @@ function App() {
         setShapes,
         setDrawState,
         currentShapeIndex,
-        currentSegmentIndex,
+        currentSegmentIndex
       )}
       onMouseDown={handleMouseDown(
         drawState,
@@ -841,8 +1246,9 @@ function App() {
         selectionRectangle,
         setMouseDownSelectionRectangle,
         setSelectedPointIndexes,
+        setIsMouseDown,
         setShowContextMenu,
-        setIsMouseDown
+        showContextMenu
       )}
       onMouseMove={handleMouseMove(
         setCursorPosition,
@@ -861,7 +1267,8 @@ function App() {
         setSelectionRectangle,
         mouseDownSelectionRectangle,
         selectedPointIndexes,
-        isMouseDown
+        isMouseDown,
+        showContextMenu
       )}
       onMouseUp={continueDrawing(
         cursorPosition,
@@ -886,86 +1293,6 @@ function App() {
       >
         Hello, my name is Fatih.
       </h1>
-      <div
-        style={{
-          float: "right",
-        }}
-        className={"header-tools"}
-      >
-        <span
-          style={{
-            backgroundColor: `rgba(${currentFillColor.r}, ${currentFillColor.g}, ${currentFillColor.b}, ${currentFillColor.a})`,
-          }}
-          className={"color-picker-preview"}
-          onClick={() => {
-            setFillColorPicker(!showFillColorPicker);
-          }}
-        ></span>
-        <span className={"color-picker-label"}>Fill</span>
-        {showFillColorPicker && (
-          <div
-            style={{
-              position: "absolute",
-            }}
-          >
-            <ColorPicker
-              color={currentFillColor}
-              onChange={(color) => {
-                const pickedColor = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
-                setCurrentFillColor({
-                  r: color.rgb.r,
-                  g: color.rgb.g,
-                  b: color.rgb.b,
-                  a: color.rgb.a,
-                });
-                updateCurrentShapeFill(
-                  shapes,
-                  setShapes,
-                  selectedShapeIndex,
-                  pickedColor
-                );
-              }}
-            />
-          </div>
-        )}
-        <span
-          style={{
-            marginLeft: 20,
-            backgroundColor: `rgba(${currentStrokeColor.r}, ${currentStrokeColor.g}, ${currentStrokeColor.b}, ${currentStrokeColor.a})`,
-          }}
-          className={"color-picker-preview"}
-          onClick={() => {
-            setShowStrokeColorPicker(!showStrokeColorPicker);
-          }}
-        ></span>
-        <span className={"color-picker-label"}>Stroke</span>
-        {showStrokeColorPicker && (
-          <div
-            style={{
-              position: "absolute",
-            }}
-          >
-            <ColorPicker
-              color={currentStrokeColor}
-              onChange={(color) => {
-                const pickedColor = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
-                setCurrentStrokeColor({
-                  r: color.rgb.r,
-                  g: color.rgb.g,
-                  b: color.rgb.b,
-                  a: color.rgb.a,
-                });
-                updateCurrentShapeStroke(
-                  shapes,
-                  setShapes,
-                  selectedShapeIndex,
-                  pickedColor
-                );
-              }}
-            />
-          </div>
-        )}
-      </div>
       {keyStates.isShiftPressed && "shift"}
       {keyStates.isCtrlPressed && "ctrl"}
       <div className="editor">
@@ -984,7 +1311,55 @@ function App() {
                 left: contextMenuPosition.x,
               }}
             >
-              context menu
+              <ul>
+                {CONTEXT_MENU_ACTIONS.map((action, index) => (
+                  <li
+                    key={index}
+                    data-is-context-menu-action={true}
+                    onClick={handleContextMenuAction(
+                      action,
+                      shapes,
+                      setShapes,
+                      currentShapeIndex,
+                      setShowContextMenu
+                    )}
+                  >
+                    {action}
+                  </li>
+                ))}
+              </ul>
+              <div className="color-pickers">
+                <div style={{}}>
+                  <span className="color-picker-label">Fill</span> <br />
+                  <ColorInput
+                    onChange={(color) => {
+                      setCurrentFillColor(color);
+                      updateCurrentShapeFill(
+                        shapes,
+                        setShapes,
+                        currentShapeIndex,
+                        toRGBAString(color)
+                      );
+                    }}
+                    color={toRGBAString(currentFillColor)}
+                  />
+                </div>
+                <div style={{ marginTop: 10 }}>
+                  <span className="color-picker-label">Stroke</span> <br />
+                  <ColorInput
+                    onChange={(color) => {
+                      setCurrentStrokeColor(color);
+                      updateCurrentShapeStroke(
+                        shapes,
+                        setShapes,
+                        currentShapeIndex,
+                        toRGBAString(color)
+                      );
+                    }}
+                    color={toRGBAString(currentStrokeColor)}
+                  />
+                </div>
+              </div>
             </div>
           )}
           <svg
@@ -992,6 +1367,7 @@ function App() {
             className="canvas"
             width={512}
             height={512}
+            data-is-canvas={true}
           >
             {new Array(128).fill(undefined).map((_, index) => (
               <line
@@ -1266,8 +1642,12 @@ function App() {
           </div>
 
           <div id="bio">
-          I’m a self-taught full-stack software developer. I code with Python in backend; with Django framework, and other micro frameworks such as Flask. I am experienced in AsyncIO which is a Python equivalent of non-blocking servers such as NodeJS. In frontend, I worked with many libraries and state management tools.
-          <a href="cv.pdf">Resume.</a>
+            I’m a self-taught full-stack software developer. I code with Python
+            in backend; with Django framework, and other micro frameworks such
+            as Flask. I am experienced in AsyncIO which is a Python equivalent
+            of non-blocking servers such as NodeJS. In frontend, I worked with
+            many libraries and state management tools.
+            <a href="cv.pdf">Resume.</a>
           </div>
         </div>
       </div>

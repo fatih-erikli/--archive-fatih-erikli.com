@@ -156,20 +156,75 @@ h1#experiences-label {
   height: 20px;
   display: inline-block;
   cursor: pointer;
-  border: 1px solid silver;
 }
 
 .color-picker-label {
   font-size: 15px;
   color: gray;
-  margin-left: 5px;
-}
-
-.context-menu {
-  position: absolute;
+  margin-left: 1px;
 }
 
 a {
   color: black;
   margin-left: 2px;
+}
+
+.context-menu {
+  position: absolute;
+  background: #fff;
+  border: 1px solid gray;
+  width: 200px;
+  padding: 3px;
+  font-size: 0.8em;
+  border-radius: 5px;
+}
+
+.context-menu ul,
+.context-menu li {
+  list-style: none;
+  margin: 0;
+  padding: 3px;
+  width: 200px;
+}
+
+.context-menu .color-pickers {
+  margin-left: 5px;
+}
+
+.color-picker-label {
+  display: inline-block;
+  font-size: 1em;
+}
+
+.color-pickers {
+  border-top: 1px solid rgb(211, 211, 211);
+  padding-top: 10px;
+  padding-bottom: 0;
+}
+
+.context-menu li{
+  cursor: pointer;
+  color: rgb(118, 118, 118);
+}
+
+/* Color picker component */
+.color-input {
+  width: 250px;
+}
+
+.color-input-preview {
+  background: gray;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.color-input canvas {
+  border-radius: 5px;
+}
+
+.color-input-wheel {
+  margin-left: 5px;
 }
