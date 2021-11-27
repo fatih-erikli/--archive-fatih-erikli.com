@@ -1569,7 +1569,7 @@ function App() {
                               );
                             })()
                               ? "blue"
-                              : "silver"
+                              : "transparent"
                           }
                           r={SEGMENT_CIRCLE_RADIUS}
                         />
