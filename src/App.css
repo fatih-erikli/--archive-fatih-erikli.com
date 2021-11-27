@@ -1,25 +1,15 @@
 body {
   background-color: rgb(228, 228, 228);
   font-family: Helvetica, sans-serif;
+  margin: 0;
 }
 
 .app-container {
-  margin: 2em;
-  width: 960px;
-  margin: auto;
+  line-height: 0;
 }
 
 .canvas {
   background-color: white;
-}
-
-.canvas-wrapper {
-  width: 512px;
-  float: left;
-}
-
-.tools {
-  float: left;
 }
 
 .preview {
@@ -32,22 +22,16 @@ h1 {
 }
 
 h3 {
-  background-color: rgb(182, 182, 182);
-  padding: 0.5em;
-  margin: 0;
+  background-color: rgb(211, 211, 211);
+  margin: 0.7em;
+  padding: 0;
   font-size: 0.7em;
   font-weight: normal;
   float: left;
-}
-
-.preview-square {
-  float: left;
-  margin-right: 1em;
-}
-
-.download-link {
-  display: inline-block;
-  margin-bottom: 5px;
+  position: absolute;
+  padding: 0.3em;
+  border-radius: 3px;
+  line-height: 1em;
 }
 
 .drawing-info {
@@ -79,7 +63,10 @@ h1 a:hover {
   color: blue;
 }
 
-h1, ul, p, footer {
+h1,
+ul,
+p,
+footer {
   width: 960px;
   margin: 1em auto 0.2em;
 }
@@ -166,7 +153,6 @@ h1#experiences-label {
 
 a {
   color: black;
-  margin-left: 2px;
 }
 
 .context-menu {
@@ -177,6 +163,7 @@ a {
   padding: 3px;
   font-size: 0.8em;
   border-radius: 5px;
+  line-height: 1em;
 }
 
 .context-menu ul,
@@ -185,6 +172,12 @@ a {
   margin: 0;
   padding: 3px;
   width: 200px;
+}
+
+.context-menu li a,
+.context-menu li span {
+  display: inline-block;
+  padding: 0.1em;
 }
 
 .context-menu .color-pickers {
@@ -202,8 +195,7 @@ a {
   padding-bottom: 0;
 }
 
-.context-menu li{
-  cursor: pointer;
+.context-menu li {
   color: rgb(118, 118, 118);
 }
 
@@ -227,4 +219,43 @@ a {
 
 .color-input-wheel {
   margin-left: 5px;
+}
+
+.canvas {
+  background-size: 8px 8px;
+  background-image:
+    linear-gradient(to right, #ebebeb, 1px, transparent 1px),
+    linear-gradient(to bottom, #ebebeb, 1px, transparent 1px);
+}
+
+.preview-square {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  background: white;
+}
+
+.preview-square svg {
+  background: white;
+  margin-top: 1.2em;
+}
+
+.download-link {
+  display: block;
+  background: white;
+  padding: 0.2em;
+  text-decoration: none;
+  text-align: left;
+}
+
+.remove-preview-button {
+  position: absolute;
+  right: 10px;
+  margin-top: 15px;
+  color: gray;
+  text-decoration: none;
+}
+
+.remove-preview-button:hover {
+  color: black;
 }

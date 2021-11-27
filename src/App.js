@@ -1,275 +1,7 @@
 import { useState, React, useEffect, useRef } from "react";
 import "./App.css";
 
-const INITIAL_SHAPES = [
-  {
-    points: [
-      { x: 151, y: 290.3000030517578 },
-      { x: 145, y: 270.3000030517578 },
-      { x: 141, y: 263.3000030517578 },
-      { x: 113, y: 214.3000030517578 },
-      { x: 113, y: 161.3000030517578 },
-      { x: 144, y: 137.3000030517578 },
-      { x: 159, y: 126.30000305175781 },
-      { x: 166, y: 123.30000305175781 },
-      { x: 145, y: 97.30000305175781 },
-      { x: 232, y: 58.30000305175781 },
-      { isControlPoint: true, x: 260.1000061035156, y: 60.275001525878906 },
-      { x: 287.5, y: 62.30000305175781 },
-      { x: 304.5, y: 60.30000305175781 },
-      { isControlPoint: true, x: 316.6000061035156, y: 45.775001525878906 },
-      { x: 344.5, y: 84.11666870117188 },
-      { isControlPoint: true, x: 367.6000061035156, y: 87.2750015258789 },
-      { x: 382.20001220703125, y: 112.46665954589844 },
-      { isControlPoint: true, x: 411.1000061035156, y: 119.55000305175781 },
-      { x: 417, y: 172.3000030517578 },
-      { x: 398.5, y: 218.11666870117188 },
-      { x: 379, y: 275.3000030517578 },
-      { x: 366, y: 338.3000030517578 },
-      { x: 366, y: 282.3000030517578 },
-      { x: 363, y: 267.3000030517578 },
-      { x: 344, y: 184.3000030517578 },
-      { x: 343.6000061035156, y: 183.85832977294922 },
-      { isControlPoint: true, x: 275.1166687011719, y: 164.9000015258789 },
-      { x: 209, y: 173.3000030517578 },
-      { x: 172, y: 156.3000030517578 },
-      { x: 158, y: 216.3000030517578 },
-      { x: 159, y: 338.3000030517578 },
-      { x: 151, y: 290.3000030517578 },
-    ],
-    fill: "rgba(240, 240, 240, 0.9)",
-  },
-  {
-    points: [
-      { x: 249, y: 410.6333312988281 },
-      { x: 262, y: 412.066650390625 },
-      { x: 277, y: 409.6333312988281 },
-      { x: 270, y: 429.01666259765625 },
-      { x: 263, y: 433.6333312988281 },
-      { x: 254, y: 428.01666259765625 },
-      { x: 249, y: 410.6333312988281 },
-    ],
-    fill: "rgba(244, 244, 244, 0.9)",
-  },
-  {
-    points: [
-      { x: 215, y: 399.3833312988281 },
-      { x: 223, y: 387.3833312988281 },
-      { x: 254, y: 380.3833312988281 },
-      { x: 262, y: 377.3833312988281 },
-      { x: 268, y: 377.3833312988281 },
-      { x: 272, y: 380.3833312988281 },
-      { x: 280, y: 381.3833312988281 },
-      { x: 302, y: 385.3833312988281 },
-      { x: 312, y: 390.3833312988281 },
-      { x: 315, y: 397.3833312988281 },
-      { x: 317, y: 398.3833312988281 },
-      { x: 322, y: 389.3833312988281 },
-      { x: 313, y: 375.3833312988281 },
-      { x: 285, y: 365.3833312988281 },
-      { x: 279, y: 361.3833312988281 },
-      { x: 277, y: 359.3833312988281 },
-      { x: 269, y: 361.3833312988281 },
-      { x: 265, y: 361.3833312988281 },
-      { x: 260, y: 359.3833312988281 },
-      { x: 255, y: 358.3833312988281 },
-      { x: 251, y: 359.3833312988281 },
-      { x: 243, y: 365.3833312988281 },
-      { x: 229, y: 367.3833312988281 },
-      { x: 218, y: 371.3833312988281 },
-      { x: 210, y: 378.3833312988281 },
-      { x: 205, y: 390.3833312988281 },
-      { x: 208, y: 395.3833312988281 },
-      { x: 215, y: 399.3833312988281 },
-    ],
-    fill: "rgba(240, 240, 240, 0.9)",
-  },
-  {
-    points: [
-      { x: 276, y: 264.1000061035156 },
-      { x: 297, y: 259.1000061035156 },
-      { x: 316, y: 252.6999969482422 },
-      { x: 338, y: 253.10000610351562 },
-      { x: 355, y: 263.1000061035156 },
-      { x: 341, y: 244.10000610351562 },
-      { x: 329, y: 241.6999969482422 },
-      { x: 316, y: 242.10000610351562 },
-      { x: 292, y: 244.10000610351562 },
-      { x: 280, y: 249.10000610351562 },
-      { x: 276, y: 264.1000061035156 },
-    ],
-    fill: "rgba(242, 242, 242, 0.9)",
-  },
-  {
-    points: [
-      { x: 167, y: 270.1000061035156 },
-      { x: 185, y: 259.1000061035156 },
-      { x: 198, y: 256.6999969482422 },
-      { x: 216, y: 261.1000061035156 },
-      { x: 238, y: 267.1000061035156 },
-      { x: 238, y: 253.10000610351562 },
-      { x: 226, y: 247.6999969482422 },
-      { x: 214, y: 246.10000610351562 },
-      { x: 196, y: 245.6999969482422 },
-      { x: 180, y: 248.10000610351562 },
-      { x: 171, y: 255.10000610351562 },
-      { x: 167, y: 270.1000061035156 },
-    ],
-    fill: "rgba(252, 252, 252, 0.9)",
-  },
-  {
-    points: [
-      { x: 284, y: 284.3000030517578 },
-      { x: 295, y: 275.3000030517578 },
-      { x: 307, y: 273.3000030517578 },
-      { x: 323, y: 273.3000030517578 },
-      { x: 329, y: 275.9499969482422 },
-      { x: 338, y: 282.3000030517578 },
-      { x: 330.5, y: 278.91666412353516 },
-      { x: 328.5, y: 277.6500015258789 },
-      { x: 326, y: 276.3000030517578 },
-      { x: 311, y: 273.3000030517578 },
-      { x: 304, y: 274.3000030517578 },
-      { x: 297, y: 276.3000030517578 },
-      { x: 286, y: 284.3000030517578 },
-      { x: 284, y: 284.3000030517578 },
-    ],
-  },
-  {
-    points: [
-      { x: 282, y: 284.3000030517578 },
-      { x: 294, y: 287.3000030517578 },
-      { x: 302, y: 290.3000030517578 },
-      { x: 311, y: 290.3000030517578 },
-      { x: 319, y: 288.3000030517578 },
-      { x: 328, y: 283.3000030517578 },
-      { x: 336, y: 282.3000030517578 },
-      { x: 330, y: 284.3000030517578 },
-      { x: 326, y: 286.3000030517578 },
-      { x: 320, y: 290.3000030517578 },
-      { x: 316, y: 291.3000030517578 },
-      { x: 303, y: 292.3000030517578 },
-      { x: 294, y: 289.3000030517578 },
-      { x: 282, y: 284.3000030517578 },
-    ],
-  },
-  {
-    points: [
-      { x: 176, y: 287.3000030517578 },
-      { x: 186, y: 282.3000030517578 },
-      { x: 190, y: 280.3000030517578 },
-      { x: 195, y: 278.3000030517578 },
-      { x: 208, y: 278.3000030517578 },
-      { x: 211, y: 279.31666564941406 },
-      { x: 215, y: 281.3000030517578 },
-      { x: 225, y: 287.3000030517578 },
-      { x: 230, y: 289.3000030517578 },
-      { x: 234, y: 290.3000030517578 },
-      { x: 234, y: 289.3000030517578 },
-      { x: 229, y: 287.3000030517578 },
-      { x: 222, y: 284.3000030517578 },
-      { x: 215, y: 279.3000030517578 },
-      { x: 209, y: 276.3000030517578 },
-      { x: 201, y: 276.3000030517578 },
-      { x: 194, y: 276.3000030517578 },
-      { x: 184, y: 280.3000030517578 },
-      { x: 182, y: 282.3000030517578 },
-      { x: 176, y: 287.3000030517578 },
-    ],
-  },
-  {
-    points: [
-      { x: 229, y: 289.3000030517578 },
-      { x: 219, y: 292.3000030517578 },
-      { x: 214, y: 295.3000030517578 },
-      { x: 207, y: 295.8999938964844 },
-      { x: 200, y: 296.3000030517578 },
-      { x: 186, y: 294.6999969482422 },
-      { x: 182, y: 291.3000030517578 },
-      { x: 177, y: 287.3000030517578 },
-      { x: 183, y: 291.3000030517578 },
-      { x: 187, y: 293.3000030517578 },
-      { x: 201, y: 294.3000030517578 },
-      { x: 212, y: 294.3000030517578 },
-      { x: 219, y: 291.3000030517578 },
-      { x: 229, y: 289.3000030517578 },
-    ],
-  },
-  {
-    points: [
-      { x: 197, y: 281.3000030517578 },
-      { x: 196, y: 285 },
-      { x: 196, y: 289.3000030517578 },
-      { x: 198, y: 292.3000030517578 },
-      { x: 203, y: 294.3000030517578 },
-      { x: 203, y: 294.1500015258789 },
-      { x: 209, y: 293 },
-      { x: 212, y: 291 },
-      { x: 213, y: 287.3000030517578 },
-      { x: 212, y: 283.3000030517578 },
-      { x: 207, y: 280.3000030517578 },
-      { x: 203, y: 279.3000030517578 },
-      { x: 199, y: 280.3000030517578 },
-      { x: 197, y: 281.3000030517578 },
-    ],
-    fill: "rgba(233, 233, 233, 1)",
-  },
-  {
-    points: [
-      { x: 303, y: 277.3000030517578 },
-      { x: 303, y: 284.3000030517578 },
-      { x: 305, y: 288.3000030517578 },
-      { x: 311, y: 289.3000030517578 },
-      { isControlPoint: true, x: 315.1000061035156, y: 288.2750015258789 },
-      { x: 315.1000061035156, y: 288.2750015258789 },
-      { x: 318, y: 285.3000030517578 },
-      { x: 318, y: 280.3000030517578 },
-      { x: 316, y: 276.3000030517578 },
-      { x: 311, y: 274.3000030517578 },
-      { x: 306, y: 275.3000030517578 },
-      { x: 303, y: 277.3000030517578 },
-    ],
-    fill: "rgba(233, 233, 233, 0.9)",
-  },
-  {
-    points: [
-      { x: 231, y: 393.29998779296875 },
-      { x: 253, y: 388.29998779296875 },
-      { x: 261, y: 387.29998779296875 },
-      { x: 265, y: 387.3000030517578 },
-      { x: 268, y: 387.29998779296875 },
-      { x: 277, y: 388.29998779296875 },
-      { x: 286, y: 390.29998779296875 },
-      { x: 294, y: 393.29998779296875 },
-      { x: 278, y: 391.29998779296875 },
-      { x: 273, y: 391.29998779296875 },
-      { x: 263, y: 391.29998779296875 },
-      { x: 254, y: 391.29998779296875 },
-      { x: 247, y: 392.29998779296875 },
-      { x: 239, y: 394.29998779296875 },
-      { x: 231, y: 393.29998779296875 },
-    ],
-  },
-  {
-    points: [
-      { x: 231, y: 391.4499969482422 },
-      { x: 240, y: 399.4499969482422 },
-      { x: 246, y: 400.3000030517578 },
-      { x: 252, y: 400.4499969482422 },
-      { x: 276, y: 400.4499969482422 },
-      { x: 285, y: 396.4499969482422 },
-      { x: 290, y: 394.21665954589844 },
-      { x: 294, y: 392.4499969482422 },
-      { x: 281, y: 395.4499969482422 },
-      { x: 277, y: 397.4499969482422 },
-      { x: 267, y: 398.4499969482422 },
-      { x: 252, y: 397.4499969482422 },
-      { x: 242, y: 397.4499969482422 },
-      { x: 231, y: 391.4499969482422 },
-    ],
-    fill: "rgba(252, 252, 252, 0.9)",
-  },
-];
+const INITIAL_APP_STATE = {"shapes":[{"points":[{"x":147,"y":343.3000030517578},{"x":141,"y":323.3000030517578},{"x":137,"y":316.3000030517578},{"x":109,"y":267.3000030517578},{"x":109,"y":214.3000030517578},{"x":140,"y":190.3000030517578},{"x":155,"y":179.3000030517578},{"x":162,"y":176.3000030517578},{"x":141,"y":150.3000030517578},{"x":228,"y":111.30000305175781},{"isControlPoint":true,"x":256.1000061035156,"y":113.2750015258789},{"x":283.5,"y":115.30000305175781},{"x":300.5,"y":113.30000305175781},{"isControlPoint":true,"x":312.6000061035156,"y":98.7750015258789},{"x":340.5,"y":137.11666870117188},{"isControlPoint":true,"x":363.6000061035156,"y":140.2750015258789},{"x":378.20001220703125,"y":165.46665954589844},{"isControlPoint":true,"x":407.1000061035156,"y":172.5500030517578},{"x":413,"y":225.3000030517578},{"x":394.5,"y":271.1166687011719},{"x":375,"y":328.3000030517578},{"x":362,"y":391.3000030517578},{"x":362,"y":335.3000030517578},{"x":359,"y":320.3000030517578},{"x":340,"y":237.3000030517578},{"x":339.6000061035156,"y":236.85832977294922},{"isControlPoint":true,"x":271.1166687011719,"y":217.9000015258789},{"x":205,"y":226.3000030517578},{"x":168,"y":209.3000030517578},{"x":154,"y":269.3000030517578},{"x":155,"y":391.3000030517578},{"x":147,"y":343.3000030517578}],"fill":"rgba(240, 240, 240, 0.9)"},{"points":[{"x":245,"y":465.6333312988281},{"x":258,"y":467.066650390625},{"x":273,"y":464.6333312988281},{"x":266,"y":484.01666259765625},{"x":259,"y":488.6333312988281},{"x":250,"y":483.01666259765625},{"x":245,"y":465.6333312988281}],"fill":"rgba(244, 244, 244, 0.9)"},{"points":[{"x":211,"y":454.3833312988281},{"x":219,"y":442.3833312988281},{"x":250,"y":435.3833312988281},{"x":258,"y":432.3833312988281},{"x":264,"y":432.3833312988281},{"x":268,"y":435.3833312988281},{"x":276,"y":436.3833312988281},{"x":298,"y":440.3833312988281},{"x":308,"y":445.3833312988281},{"x":311,"y":452.3833312988281},{"x":313,"y":453.3833312988281},{"x":318,"y":444.3833312988281},{"x":309,"y":430.3833312988281},{"x":281,"y":420.3833312988281},{"x":275,"y":416.3833312988281},{"x":273,"y":414.3833312988281},{"x":265,"y":416.3833312988281},{"x":261,"y":416.3833312988281},{"x":256,"y":414.3833312988281},{"x":251,"y":413.3833312988281},{"x":247,"y":414.3833312988281},{"x":239,"y":420.3833312988281},{"x":225,"y":422.3833312988281},{"x":214,"y":426.3833312988281},{"x":206,"y":433.3833312988281},{"x":201,"y":445.3833312988281},{"x":204,"y":450.3833312988281},{"x":211,"y":454.3833312988281}],"fill":"rgba(240, 240, 240, 0.9)"},{"points":[{"x":272,"y":319.1000061035156},{"x":293,"y":314.1000061035156},{"x":312,"y":307.6999969482422},{"x":334,"y":308.1000061035156},{"x":351,"y":318.1000061035156},{"x":337,"y":299.1000061035156},{"x":325,"y":296.6999969482422},{"x":312,"y":297.1000061035156},{"x":288,"y":299.1000061035156},{"x":276,"y":304.1000061035156},{"x":272,"y":319.1000061035156}],"fill":"rgba(242, 242, 242, 0.9)"},{"points":[{"x":167,"y":322.1000061035156},{"x":185,"y":311.1000061035156},{"x":198,"y":308.6999969482422},{"x":216,"y":313.1000061035156},{"x":238,"y":319.1000061035156},{"x":238,"y":305.1000061035156},{"x":226,"y":299.6999969482422},{"x":214,"y":298.1000061035156},{"x":196,"y":297.6999969482422},{"x":180,"y":300.1000061035156},{"x":171,"y":307.1000061035156},{"x":167,"y":322.1000061035156}],"fill":"rgba(252, 252, 252, 0.9)"},{"points":[{"x":280,"y":339.3000030517578},{"x":291,"y":330.3000030517578},{"x":303,"y":328.3000030517578},{"x":319,"y":328.3000030517578},{"x":325,"y":330.9499969482422},{"x":334,"y":337.3000030517578},{"x":326.5,"y":333.91666412353516},{"x":324.5,"y":332.6500015258789},{"x":322,"y":331.3000030517578},{"x":307,"y":328.3000030517578},{"x":300,"y":329.3000030517578},{"x":293,"y":331.3000030517578},{"x":282,"y":339.3000030517578},{"x":280,"y":339.3000030517578}]},{"points":[{"x":278,"y":339.3000030517578},{"x":290,"y":342.3000030517578},{"x":298,"y":345.3000030517578},{"x":307,"y":345.3000030517578},{"x":315,"y":343.3000030517578},{"x":324,"y":338.3000030517578},{"x":332,"y":337.3000030517578},{"x":326,"y":339.3000030517578},{"x":322,"y":341.3000030517578},{"x":316,"y":345.3000030517578},{"x":312,"y":346.3000030517578},{"x":299,"y":347.3000030517578},{"x":290,"y":344.3000030517578},{"x":278,"y":339.3000030517578}]},{"points":[{"x":176,"y":342.3000030517578},{"x":186,"y":337.3000030517578},{"x":190,"y":335.3000030517578},{"x":195,"y":333.3000030517578},{"x":208,"y":333.3000030517578},{"x":211,"y":334.31666564941406},{"x":215,"y":336.3000030517578},{"x":225,"y":342.3000030517578},{"x":230,"y":342.3000030517578},{"x":231,"y":342.3000030517578},{"x":231,"y":342.3000030517578},{"x":229,"y":342.3000030517578},{"x":222,"y":339.3000030517578},{"x":215,"y":334.3000030517578},{"x":209,"y":331.3000030517578},{"x":201,"y":331.3000030517578},{"x":194,"y":331.3000030517578},{"x":184,"y":335.3000030517578},{"x":182,"y":337.3000030517578},{"x":176,"y":342.3000030517578}]},{"points":[{"x":230,"y":343.3000030517578},{"x":220,"y":346.3000030517578},{"x":215,"y":349.3000030517578},{"x":208,"y":349.8999938964844},{"x":201,"y":350.3000030517578},{"x":187,"y":348.6999969482422},{"x":183,"y":345.3000030517578},{"x":178,"y":341.3000030517578},{"x":184,"y":345.3000030517578},{"x":188,"y":347.3000030517578},{"x":202,"y":348.3000030517578},{"x":213,"y":348.3000030517578},{"x":220,"y":345.3000030517578},{"x":230,"y":343.3000030517578}]},{"points":[{"x":196,"y":335.3000030517578},{"x":195,"y":339},{"x":195,"y":343.3000030517578},{"x":197,"y":346.3000030517578},{"x":202,"y":348.3000030517578},{"x":202,"y":348.1500015258789},{"x":208,"y":347},{"x":211,"y":345},{"x":212,"y":341.3000030517578},{"x":211,"y":337.3000030517578},{"x":206,"y":334.3000030517578},{"x":202,"y":333.3000030517578},{"x":198,"y":334.3000030517578},{"x":196,"y":335.3000030517578}],"fill":"rgba(233, 233, 233, 1)"},{"points":[{"x":299,"y":332.3000030517578},{"x":299,"y":339.3000030517578},{"x":301,"y":343.3000030517578},{"x":307,"y":344.3000030517578},{"isControlPoint":true,"x":311.1000061035156,"y":343.2750015258789},{"x":311.1000061035156,"y":343.2750015258789},{"x":314,"y":340.3000030517578},{"x":314,"y":335.3000030517578},{"x":312,"y":331.3000030517578},{"x":307,"y":329.3000030517578},{"x":302,"y":330.3000030517578},{"x":299,"y":332.3000030517578}],"fill":"rgba(233, 233, 233, 0.9)"},{"points":[{"x":227,"y":448.29998779296875},{"x":249,"y":443.29998779296875},{"x":257,"y":442.29998779296875},{"x":261,"y":442.3000030517578},{"x":264,"y":442.29998779296875},{"x":273,"y":443.29998779296875},{"x":282,"y":445.29998779296875},{"x":290,"y":448.29998779296875},{"x":274,"y":446.29998779296875},{"x":269,"y":446.29998779296875},{"x":259,"y":446.29998779296875},{"x":250,"y":446.29998779296875},{"x":243,"y":447.29998779296875},{"x":235,"y":449.29998779296875},{"x":227,"y":448.29998779296875}]},{"points":[{"x":227,"y":446.4499969482422},{"x":236,"y":454.4499969482422},{"x":242,"y":455.3000030517578},{"x":248,"y":455.4499969482422},{"x":272,"y":455.4499969482422},{"x":281,"y":451.4499969482422},{"x":286,"y":449.21665954589844},{"x":290,"y":447.4499969482422},{"x":277,"y":450.4499969482422},{"x":273,"y":452.4499969482422},{"x":263,"y":453.4499969482422},{"x":248,"y":452.4499969482422},{"x":238,"y":452.4499969482422},{"x":227,"y":446.4499969482422}],"fill":"rgba(252, 252, 252, 0.9)"},{"points":[{"x":470,"y":291}],"text":"My amazing web page","fontSize":"40"},{"points":[{"x":477,"y":375}],"text":"this is a button"},{"points":[{"x":473,"y":321}],"text":"Hello, my name is Fatih."},{"points":[{"x":471,"y":343}],"text":"I am a full-stack software developer."},{"fill":{"r":238,"g":238,"b":238,"a":0.9},"points":[{"x":469,"y":358},{"x":587,"y":359},{"x":587,"y":381},{"x":469,"y":381},{"x":469,"y":358}]}],"previews":[{"size":256,"shapes":[0,1,2,3,4,5,6,7,8,9,10,11,12]},{"size":128,"shapes":[0,1,2,3,4,5,6,7,8,9,10,11,12]}]};
 
 const reflect = (p, p0, p1) => {
   // https://gist.github.com/balint42/b99934b2a6990a53e14b
@@ -302,8 +34,11 @@ const SHAPE_CLOSE_DISTANCE = 2;
 const SEGMENT_CIRCLE_RADIUS = 2;
 
 const DRAW_STATE_LABELS = {
-  [DRAW_STATE_READY]: "Click on canvas and drag it to start drawing",
-  [DRAW_STATE_START]: "Click on another point to connect with the latest",
+  [DRAW_STATE_READY]:
+    "Click on canvas to start drawing. Shift+click to remove a shape.",
+  [DRAW_STATE_START]:
+    "Click on another point to connect with the latest,\
+    click and drag it to create a bezier curve control point",
   [DRAW_STATE_MOVE_SEGMENT]: "Moving a segment of a shape",
   [DRAW_STATE_INSERT_SEGMENT]:
     "Click on the a point on the line to insert a segment",
@@ -320,7 +55,15 @@ const DRAW_STATE_LABELS = {
 };
 
 const CONTEXT_MENU_ACTION_DUPLICATE = "Duplicate";
-const CONTEXT_MENU_ACTIONS = [CONTEXT_MENU_ACTION_DUPLICATE];
+const CONTEXT_MENU_ACTION_DELETE_SHAPE = "Delete Shape";
+const CONTEXT_MENU_ACTION_SEND_TO_BACK = "Send to back";
+const CONTEXT_MENU_ACTION_BRING_TO_FRONT = "Bring to front";
+const CONTEXT_MENU_ACTIONS = [
+  CONTEXT_MENU_ACTION_DUPLICATE,
+  CONTEXT_MENU_ACTION_DELETE_SHAPE,
+  CONTEXT_MENU_ACTION_SEND_TO_BACK,
+  CONTEXT_MENU_ACTION_BRING_TO_FRONT,
+];
 
 function handleContextMenu(
   drawState,
@@ -395,7 +138,7 @@ function handleMouseDown(
     if (event.target.dataset.isCanvas) {
       showContextMenuSetterFunction(false);
     }
-    if (event.target.dataset.isContextMenuAction || showContextMenu) {
+    if (event.target.dataset.isContextMenuAction || showContextMenu || event.target.dataset.preventCreation) {
       return;
     }
     if (event.buttons === 2) {
@@ -492,10 +235,13 @@ function handleMouseDown(
 }
 
 function findLastOpenShapeIndex(shapes) {
-  return shapes.findIndex(({ points }) => {
+  return shapes.findIndex(({ points, text }) => {
     const last = points[points.length - 1];
     const first = points[0];
-    return points.length < 3 || !(first.x === last.x && first.y === last.y);
+    return (
+      (!text && points.length < 3) ||
+      !(first.x === last.x && first.y === last.y)
+    );
   });
 }
 
@@ -595,8 +341,27 @@ function continueDrawing(
         return;
       }
 
-      const lastOpenShapeIndex = findLastOpenShapeIndex(shapes);
+      const lastShape = shapes[shapes.length - 1];
+      if (
+        lastShape &&
+        lastShape.points.length === 1 &&
+        !lastShape.text &&
+        lastShape.points[0].x === cursorPosition.x &&
+        lastShape.points[0].y === cursorPosition.y
+      ) {
+        // shape created by double-click
+        shapesSetterFunction([
+          ...shapes.slice(0, shapes.length - 1),
+          {
+            points: [cursorPosition],
+            text: "Text",
+          },
+        ]);
+        drawStateSetterFunction(DRAW_STATE_READY);
+        return;
+      }
 
+      const lastOpenShapeIndex = findLastOpenShapeIndex(shapes);
       let newShapes;
       let newAppState = DRAW_STATE_START;
       if (lastOpenShapeIndex === -1) {
@@ -675,7 +440,6 @@ function handleMouseMove(
     cursorPositionSetterFunction(cursorPosition);
 
     if (drawState === DRAW_STATE_MOVE_SEGMENT) {
-      console.log(cursorPosition, currentShapeIndex, currentSegmentIndex);
       shapesSetterFunction(
         shapes.map((shape, shapeIndex) => ({
           ...shape,
@@ -873,7 +637,23 @@ function handleContextMenuAction(
 ) {
   return () => {
     switch (action) {
-      case CONTEXT_MENU_ACTION_DUPLICATE:
+      case CONTEXT_MENU_ACTION_BRING_TO_FRONT: {
+        const shape = shapes[currentShapeIndex];
+        shapesSetterFunction([
+          ...shapes.filter((_, index) => index !== currentShapeIndex),
+          shape,
+        ]);
+        break;
+      }
+      case CONTEXT_MENU_ACTION_SEND_TO_BACK: {
+        const shape = shapes[currentShapeIndex];
+        shapesSetterFunction([
+          shape,
+          ...shapes.filter((_, index) => index !== currentShapeIndex),
+        ]);
+        break;
+      }
+      case CONTEXT_MENU_ACTION_DUPLICATE: {
         const currentShape = shapes[currentShapeIndex];
         if (!currentShape) {
           return;
@@ -889,6 +669,12 @@ function handleContextMenuAction(
             })),
           },
         ]);
+        break;
+      }
+      case CONTEXT_MENU_ACTION_DELETE_SHAPE:
+        shapesSetterFunction(
+          shapes.filter((shape, index) => index !== currentShapeIndex)
+        );
         break;
     }
     showContextMenuSetterFunction(false);
@@ -1031,7 +817,7 @@ function useHashedState(name, defaults) {
       setState(value);
     },
     () => {
-      const [head, fragment] = window.location.href.split(`#${name}=`);
+      const [_, fragment] = window.location.href.split(`#${name}=`);
       if (fragment) {
         const [value] = fragment.split("#");
         setState(JSON.parse(decodeURIComponent(value)));
@@ -1046,11 +832,15 @@ function distance(x1, y1, x2, y2) {
   return Math.sqrt(a * a + b * b);
 }
 
-function handleKeyDown(keyStatesSetterFunction) {
+function handleKeyDown(keyStatesSetterFunction, selectAll) {
   return (event) => {
     let keyStateUpdates = {};
     event.shiftKey && (keyStateUpdates["isShiftPressed"] = true);
     event.ctrlKey && (keyStateUpdates["isCtrlPressed"] = true);
+    if (event.metaKey && event.key === "a") {
+      event.preventDefault();
+      selectAll();
+    }
     keyStatesSetterFunction(keyStateUpdates);
   };
 }
@@ -1148,13 +938,307 @@ function buildSVGPath(points, divider = 1) {
 
     if (isControlPoint) {
       svgString = `${svgString} ${x / divider},${y / divider} `;
-    } else if (points[index + 1].isControlPoint) {
+    } else if (points[index + 1] && points[index + 1].isControlPoint) {
       svgString = `${svgString} Q ${x / divider},${y / divider} `;
     } else {
       svgString = `${svgString} L ${x / divider},${y / divider} `;
     }
   });
   return svgString;
+}
+
+function exportPreview(
+  previewSize,
+  previews,
+  previewsSetterFunction,
+  shapes,
+  setShowContextMenu,
+  selectionRectangle
+) {
+  return (event) => {
+    event.preventDefault();
+    const flatPoints = shapes
+      .map((shape, shapeIndex) =>
+        shape.points.map((point) => [shapeIndex, point])
+      )
+      .flat();
+    const selectedPointIndexes = flatPoints
+      .map((point, index) =>
+        isPointInRectangle(point[1], selectionRectangle) ? { index } : null
+      )
+      .filter(Boolean)
+      .map(({ index }) => index);
+    const shapeIndexes = new Set(
+      selectedPointIndexes.map(
+        (flatPointIndex) => flatPoints[flatPointIndex][0]
+      )
+    );
+    previewsSetterFunction([
+      ...previews,
+      {
+        size: previewSize,
+        shapes: [...shapeIndexes],
+      },
+    ]);
+    setShowContextMenu(false);
+  };
+}
+
+function ContextMenu({
+  contextMenuPosition,
+  onContextMenuAction,
+  setCurrentFillColor,
+  setCurrentStrokeColor,
+  shapes,
+  setShapes,
+  currentShapeIndex,
+  setShowContextMenu,
+  currentFillColor,
+  currentStrokeColor,
+  previews,
+  setPreviews,
+  selectionRectangle,
+}) {
+  const currentShape = shapes[currentShapeIndex];
+  return (
+    <div
+      className={"context-menu"}
+      style={{
+        top: contextMenuPosition.y,
+        left: contextMenuPosition.x,
+      }}
+    >
+      <ul>
+        {CONTEXT_MENU_ACTIONS.map((action, index) => (
+          <li
+            key={index}
+            data-is-context-menu-action={true}
+            onClick={onContextMenuAction(
+              action,
+              shapes,
+              setShapes,
+              currentShapeIndex,
+              setShowContextMenu
+            )}
+          >
+            <a href="#">{action}</a>
+          </li>
+        ))}
+        <li>
+          <span>Export:</span>
+          {[512, 256, 128].map((previewSize, index) => (
+            <a
+              key={index}
+              href=""
+              onClick={exportPreview(
+                previewSize,
+                previews,
+                setPreviews,
+                shapes,
+                setShowContextMenu,
+                selectionRectangle
+              )}
+            >
+              {previewSize}px
+            </a>
+          ))}
+        </li>
+        {currentShape && typeof currentShape.text === "string" && (
+          <>
+            <li>
+              <span>
+                Text:{" "}
+                <input
+                  value={currentShape.text}
+                  onChange={(event) => {
+                    setShapes(
+                      shapes.map((shape, index) =>
+                        index === currentShapeIndex
+                          ? {
+                              ...shape,
+                              text: event.target.value,
+                            }
+                          : shape
+                      )
+                    );
+                  }}
+                  style={{
+                    width: "90%",
+                  }}
+                  type="text"
+                />
+              </span>
+            </li>
+            <li>
+              <span>
+                Font size:
+                <br />
+                <input
+                  value={currentShape.fontSize || 15}
+                  type={"number"}
+                  onChange={(event) => {
+                    setShapes(
+                      shapes.map((shape, index) =>
+                        index === currentShapeIndex
+                          ? {
+                              ...shape,
+                              fontSize: event.target.value,
+                            }
+                          : shape
+                      )
+                    );
+                  }}
+                  style={{
+                    width: "20%",
+                  }}
+                />
+              </span>
+            </li>
+          </>
+        )}
+      </ul>
+      <div className="color-pickers">
+        <div style={{}}>
+          <span className="color-picker-label">Fill</span> <br />
+          <ColorInput
+            onChange={(color) => {
+              setCurrentFillColor(color);
+              updateCurrentShapeFill(
+                shapes,
+                setShapes,
+                currentShapeIndex,
+                toRGBAString(color)
+              );
+            }}
+            color={toRGBAString(currentFillColor)}
+          />
+        </div>
+        <div style={{ marginTop: 10 }}>
+          <span className="color-picker-label">Stroke</span> <br />
+          <ColorInput
+            onChange={(color) => {
+              setCurrentStrokeColor(color);
+              updateCurrentShapeStroke(
+                shapes,
+                setShapes,
+                currentShapeIndex,
+                toRGBAString(color)
+              );
+            }}
+            color={toRGBAString(currentStrokeColor)}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Preview({
+  size,
+  shapes,
+  shapeIndexes,
+  index,
+  points,
+  cursorPosition,
+  style,
+  onRemove,
+}) {
+  const _ensureSetShapeIndexes =
+    "has" in shapeIndexes ? shapeIndexes : new Set(shapeIndexes);
+  const divider = 512 / size;
+  const shapesFiltered = shapes.filter((_, index) =>
+    _ensureSetShapeIndexes.has(index)
+  );
+  const flatPoints = shapesFiltered.map((shape) => shape.points).flat();
+  const maxX = Math.max(...flatPoints.map(({ x }) => x));
+  const maxY = Math.max(...flatPoints.map(({ y }) => y));
+  const minX = Math.min(...flatPoints.map(({ x }) => x));
+  const minY = Math.min(...flatPoints.map(({ y }) => y));
+  const centerX = (512 - (maxX - minX)) / 2;
+  const centerY = (512 - (maxY - minY)) / 2;
+  return (
+    <div
+      className={"preview-square"}
+      key={`preview-${index}`}
+      style={{ ...style, width: size }}
+    >
+      <h3>
+        {size}x{size}
+      </h3>
+      <a data-prevent-creation={true} href={'#'} onClick={onRemove} className="remove-preview-button">
+        x
+      </a>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="canvas"
+        id={`preview-${index}`}
+        width={size}
+        height={size}
+      >
+        {shapesFiltered.map((shape, index) => {
+          const pointsAsSVGString = buildSVGPath(
+            shape.points.map(({ x, y }) => ({
+              x: x - minX + centerX,
+              y: y - minY + centerY,
+            })),
+            divider
+          );
+          return (
+            <g key={index}>
+              {shape.text && (
+                <text
+                  fontSize={shape.fontSize || 15}
+                  data-is-polygon={true}
+                  data-shape-index={index}
+                  x={shape.points[0].x / divider}
+                  y={shape.points[0].y / divider}
+                >
+                  {shape.text}
+                </text>
+              )}
+              <path
+                d={pointsAsSVGString}
+                stroke={shape.stroke || "black"}
+                fill={shape.fill}
+              />
+            </g>
+          );
+        })}
+      </svg>
+      <a
+        href="#"
+        className={"download-link"}
+        onClick={(event) => {
+          event.preventDefault();
+          const svgImage = document.createElement("img");
+          svgImage.width = size;
+          svgImage.height = size;
+          document.body.appendChild(svgImage);
+          svgImage.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = svgImage.clientWidth;
+            canvas.height = svgImage.clientHeight;
+            const canvasCtx = canvas.getContext("2d");
+            canvasCtx.drawImage(svgImage, 0, 0);
+            const imageDataURL = canvas.toDataURL("image/png");
+            svgImage.parentElement.removeChild(svgImage);
+            URL.revokeObjectURL(svgImage.src);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = imageDataURL;
+            downloadLink.download = `icon-${size}.png`;
+            downloadLink.click();
+          };
+          svgImage.src = URL.createObjectURL(
+            new Blob([document.getElementById(`preview-${index}`).outerHTML], {
+              type: "image/svg+xml",
+            })
+          );
+        }}
+      >
+        download
+      </a>
+    </div>
+  );
 }
 
 function App() {
@@ -1169,10 +1253,17 @@ function App() {
   const [currentShapeIndex, setCurrentShapeIndex] = useState(-1);
   const [selectedShapeIndex, setSelectedShapeIndex] = useState(-1);
   const [currentSegmentIndex, setCurrentSegmentIndex] = useState(-1);
-  const [shapes, setShapes, refreshShapesState] = useHashedState(
-    "shapes",
-    INITIAL_SHAPES
-  );
+  const [appState, setAppState, refreshAppState] = useHashedState("state", INITIAL_APP_STATE);
+  const shapes = appState.shapes;
+  const previews = appState.previews;
+  const setShapes = (shapes) => setAppState({ ...appState, shapes });
+  const setPreviews = (previews) => {
+    setAppState({
+      ...appState,
+      previews,
+    });
+  };
+
   const [keyStates, setKeyStates] = useState({
     isCtrlPressed: false,
     isShiftPressed: false,
@@ -1182,7 +1273,16 @@ function App() {
     useState({ x: -1, y: -1 });
   const [selectedPointIndexes, setSelectedPointIndexes] = useState([]);
   const lastOpenShapeIndex = findLastOpenShapeIndex(shapes);
-  const previews = [256, 128];
+  const [canvasSize, setCanvasSize] = useState({
+    width: 512,
+    height: 512,
+  });
+  useEffect(() => {
+    setCanvasSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, []);
   const [currentFillColor, setCurrentFillColor] = useState({
     r: 238,
     g: 238,
@@ -1201,9 +1301,9 @@ function App() {
     y: -1,
   });
   useEffect(() => {
-    refreshShapesState();
-    window.onpopstate = refreshShapesState;
-    window.onhashchange = refreshShapesState;
+    refreshAppState();
+    window.onpopstate = refreshAppState;
+    window.onhashchange = refreshAppState;
   }, []);
   useEffect(() => {
     const selectedShape = shapes[selectedShapeIndex];
@@ -1214,10 +1314,20 @@ function App() {
     fill && setCurrentFillColor(parseRGBA(fill));
     stroke && setCurrentStrokeColor(parseRGBA(stroke));
   }, [selectedShapeIndex]);
+  const selectAll = () => {
+    setDrawState(DRAW_STATE_SELECTION_SET);
+    setSelectionRectangle({
+      x: 0,
+      y: 0,
+      width: canvasSize.width,
+      height: canvasSize.height,
+    });
+  };
+  console.log(appState);
   return (
     <div
       tabIndex={0}
-      onKeyDown={handleKeyDown(setKeyStates)}
+      onKeyDown={handleKeyDown(setKeyStates, selectAll)}
       onKeyUp={handleKeyUp(setKeyStates)}
       className="app-container"
       onContextMenu={handleContextMenu(
@@ -1286,372 +1396,243 @@ function App() {
         setIsMouseDown
       )}
     >
-      <h1
-        style={{
-          float: "left",
-        }}
-      >
-        Hello, my name is Fatih.
-      </h1>
-      {keyStates.isShiftPressed && "shift"}
-      {keyStates.isCtrlPressed && "ctrl"}
       <div className="editor">
-        <div className={"canvas-wrapper"}>
-          <h3>
-            #Canvas{" "}
-            <span className={"drawing-info"}>
-              {DRAW_STATE_LABELS[drawState]}
-            </span>
-          </h3>
-          {showContextMenu && (
-            <div
-              className={"context-menu"}
-              style={{
-                top: contextMenuPosition.y,
-                left: contextMenuPosition.x,
-              }}
-            >
-              <ul>
-                {CONTEXT_MENU_ACTIONS.map((action, index) => (
-                  <li
-                    key={index}
-                    data-is-context-menu-action={true}
-                    onClick={handleContextMenuAction(
-                      action,
-                      shapes,
-                      setShapes,
-                      currentShapeIndex,
-                      setShowContextMenu
-                    )}
-                  >
-                    {action}
-                  </li>
-                ))}
-              </ul>
-              <div className="color-pickers">
-                <div style={{}}>
-                  <span className="color-picker-label">Fill</span> <br />
-                  <ColorInput
-                    onChange={(color) => {
-                      setCurrentFillColor(color);
-                      updateCurrentShapeFill(
-                        shapes,
-                        setShapes,
-                        currentShapeIndex,
-                        toRGBAString(color)
-                      );
-                    }}
-                    color={toRGBAString(currentFillColor)}
-                  />
-                </div>
-                <div style={{ marginTop: 10 }}>
-                  <span className="color-picker-label">Stroke</span> <br />
-                  <ColorInput
-                    onChange={(color) => {
-                      setCurrentStrokeColor(color);
-                      updateCurrentShapeStroke(
-                        shapes,
-                        setShapes,
-                        currentShapeIndex,
-                        toRGBAString(color)
-                      );
-                    }}
-                    color={toRGBAString(currentStrokeColor)}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="canvas"
-            width={512}
-            height={512}
-            data-is-canvas={true}
-          >
-            {new Array(128).fill(undefined).map((_, index) => (
-              <line
-                key={`y-${index}`}
-                x1={0}
-                x2={512}
-                className={"guideline"}
-                y1={index * 8}
-                y2={index * 8}
-              />
-            ))}
-            {new Array(128).fill(undefined).map((_, index) => (
-              <line
-                key={`x-${index}`}
-                y1={0}
-                y2={512}
-                className={"guideline"}
-                x1={index * 8}
-                x2={index * 8}
-              />
-            ))}
-            <line
-              x1={0}
-              x2={512}
-              style={{ stroke: "blue" }}
-              y1={32 * 8}
-              y2={32 * 8}
-            />
-            <line
-              y1={0}
-              y2={512}
-              style={{ stroke: "blue" }}
-              x1={32 * 8}
-              x2={32 * 8}
-            />
-            {shapes.map((shape, index) => {
-              const shapeWithCursor = [...shape.points, cursorPosition];
-              const pointsAsSVGString = buildSVGPath(shapeWithCursor);
+        <h3>
+          #Canvas{" "}
+          <span className={"drawing-info"}>{DRAW_STATE_LABELS[drawState]}</span>
+        </h3>
+        {showContextMenu && (
+          <ContextMenu
+            contextMenuPosition={contextMenuPosition}
+            onContextMenuAction={handleContextMenuAction}
+            setCurrentFillColor={setCurrentFillColor}
+            setCurrentStrokeColor={setCurrentStrokeColor}
+            currentShapeIndex={currentShapeIndex}
+            setShowContextMenu={setShowContextMenu}
+            currentFillColor={currentFillColor}
+            currentStrokeColor={currentStrokeColor}
+            shapes={shapes}
+            setShapes={setShapes}
+            previews={previews}
+            setPreviews={setPreviews}
+            setShowContextMenu={setShowContextMenu}
+            selectionRectangle={selectionRectangle}
+          />
+        )}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="canvas"
+          width={canvasSize.width}
+          height={canvasSize.height}
+          data-is-canvas={true}
+        >
+          <line
+            x1={0}
+            x2={canvasSize.width}
+            style={{ stroke: "blue" }}
+            y1={canvasSize.height / 2}
+            y2={canvasSize.height / 2}
+          />
+          <line
+            y1={0}
+            y2={canvasSize.height}
+            style={{ stroke: "blue" }}
+            x1={canvasSize.width / 2}
+            x2={canvasSize.width / 2}
+          />
+          {shapes.map((shape, index) => {
+            const shapeWithCursor = [...shape.points, cursorPosition];
+            const pointsAsSVGString = buildSVGPath(shapeWithCursor);
 
-              return (
-                <g key={index}>
-                  <path
-                    d={pointsAsSVGString}
+            return (
+              <g key={index}>
+                {shape.text && (
+                  <text
+                    fontSize={shape.fontSize || 15}
                     data-is-polygon={true}
                     data-shape-index={index}
-                    fill={"rgba(196, 196, 196, 0.5)"}
-                  />
-                  {(() => {
-                    let [head, ...tail] =
-                      drawState === DRAW_STATE_START &&
-                      lastOpenShapeIndex === index
-                        ? shapeWithCursor
-                        : shape.points;
-                    const onClosingPoint =
-                      distance(
-                        head.x,
-                        head.y,
-                        cursorPosition.x,
-                        cursorPosition.y
-                      ) > SHAPE_CLOSE_DISTANCE;
-                    const lines = [
-                      <circle
-                        data-shape-index={index}
-                        data-point-index={0}
-                        className={"segment"}
-                        data-is-segment={true}
-                        data-is-closing-point={true}
-                        key={`closing-point-${index}`}
-                        cx={head.x}
-                        cy={head.y}
-                        fill={onClosingPoint ? "orange" : "blue"}
-                        r={SEGMENT_CIRCLE_RADIUS}
-                      />,
-                    ];
-                    let keyIndex = 0;
-                    for (const point of tail) {
-                      keyIndex++;
-                      lines.push(
-                        <g key={`segments-${index}-${keyIndex}`}>
-                          {drawState === DRAW_STATE_INSERT_SEGMENT &&
-                            currentShapeIndex === index &&
-                            currentSegmentIndex === keyIndex && (
-                              <circle
-                                className={"segment"}
-                                data-is-segment={true}
-                                cx={100}
-                                cy={200}
-                                fill={"black"}
-                                r={SEGMENT_CIRCLE_RADIUS}
-                                {...(() => {
-                                  const reflection = reflect(
-                                    cursorPosition,
-                                    head,
-                                    point
-                                  );
-                                  return {
-                                    cx: (reflection.x + cursorPosition.x) / 2,
-                                    cy: (reflection.y + cursorPosition.y) / 2,
-                                  };
-                                })()}
-                              />
-                            )}
-                          <circle
-                            data-shape-index={index}
-                            data-point-index={keyIndex}
-                            className={"segment"}
-                            data-is-segment={true}
-                            cx={point.x}
-                            cy={point.y}
-                            fill={
-                              (() => {
-                                let isPointInSelectionRectangle;
-
-                                if (drawState === DRAW_STATE_SELECTION_SET) {
-                                  isPointInSelectionRectangle =
-                                    isPointInRectangle(
-                                      point,
-                                      selectionRectangle
-                                    );
-                                } else if (
-                                  drawState ===
-                                  DRAW_STATE_MOVE_SELECTED_SEGMENTS
-                                ) {
-                                  let _shapeIndex = 0;
-                                  let _pointIndex = 0;
-                                  for (shape of shapes) {
-                                    if (index === _shapeIndex) {
-                                      break;
-                                    }
-                                    _shapeIndex++;
-                                    _pointIndex += shape.points.length;
-                                  }
-                                  return (
-                                    selectedPointIndexes.indexOf(
-                                      _pointIndex + keyIndex
-                                    ) > -1
-                                  );
-                                } else {
-                                  isPointInSelectionRectangle = false;
-                                }
-
-                                const isPointInCurrentSelection =
-                                  drawState === DRAW_STATE_SELECTION_STARTED &&
-                                  isPointInRectangle(
-                                    point,
-                                    calculateSelectionRectangle(
-                                      mouseDownCursorPosition,
-                                      cursorPosition
-                                    )
-                                  );
-
-                                return (
-                                  isPointInSelectionRectangle ||
-                                  isPointInCurrentSelection
+                    x={shape.points[0].x}
+                    y={shape.points[0].y}
+                  >
+                    {shape.text}
+                  </text>
+                )}
+                <path
+                  d={pointsAsSVGString}
+                  data-is-polygon={true}
+                  data-shape-index={index}
+                  fill={"rgba(196, 196, 196, 0.5)"}
+                />
+                {(() => {
+                  let [head, ...tail] =
+                    drawState === DRAW_STATE_START &&
+                    lastOpenShapeIndex === index
+                      ? shapeWithCursor
+                      : shape.points;
+                  const onClosingPoint =
+                    distance(
+                      head.x,
+                      head.y,
+                      cursorPosition.x,
+                      cursorPosition.y
+                    ) > SHAPE_CLOSE_DISTANCE;
+                  const lines = [
+                    <circle
+                      data-shape-index={index}
+                      data-point-index={0}
+                      className={"segment"}
+                      data-is-segment={true}
+                      data-is-closing-point={true}
+                      key={`closing-point-${index}`}
+                      cx={head.x}
+                      cy={head.y}
+                      fill={onClosingPoint ? "orange" : "blue"}
+                      r={SEGMENT_CIRCLE_RADIUS}
+                    />,
+                  ];
+                  let keyIndex = 0;
+                  for (const point of tail) {
+                    keyIndex++;
+                    lines.push(
+                      <g key={`segments-${index}-${keyIndex}`}>
+                        {drawState === DRAW_STATE_INSERT_SEGMENT &&
+                          currentShapeIndex === index &&
+                          currentSegmentIndex === keyIndex && (
+                            <circle
+                              className={"segment"}
+                              data-is-segment={true}
+                              cx={100}
+                              cy={200}
+                              fill={"black"}
+                              r={SEGMENT_CIRCLE_RADIUS}
+                              {...(() => {
+                                const reflection = reflect(
+                                  cursorPosition,
+                                  head,
+                                  point
                                 );
-                              })()
-                                ? "blue"
-                                : "silver"
-                            }
-                            r={SEGMENT_CIRCLE_RADIUS}
-                          />
-                          <line
-                            stroke={"black"}
-                            x1={head.x}
-                            y1={head.y}
-                            x2={point.x}
-                            y2={point.y}
-                            data-is-segment-line={true}
-                            data-shape-index={index}
-                            data-segment-index={keyIndex}
-                          />
-                        </g>
-                      );
-                      head = point;
-                    }
-                    return lines;
-                  })()}
-                </g>
-              );
-            })}
-            {drawState === DRAW_STATE_SELECTION_STARTED &&
-              (() => {
-                const { x, y, width, height } = calculateSelectionRectangle(
-                  mouseDownCursorPosition,
-                  cursorPosition
-                );
-                return (
-                  <rect
-                    x={x}
-                    y={y}
-                    width={width}
-                    height={height}
-                    className={"selection-rectangle"}
-                  ></rect>
-                );
-              })()}
-          </svg>
-        </div>
-        <div className="tools">
-          <div className="preview">
-            {previews.map((previewSize, index) => (
-              <div
-                className={"preview-square"}
-                key={`preview-${index}`}
-                style={{ width: previewSize }}
-              >
-                <h3>
-                  {previewSize}x{previewSize}
-                </h3>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="canvas"
-                  id={`preview-${index}`}
-                  width={previewSize}
-                  height={previewSize}
-                >
-                  {shapes.map((shape, index) => {
-                    const divider = 512 / previewSize;
-                    const pointsAsSVGString = buildSVGPath(
-                      [...shape.points, cursorPosition],
-                      divider
-                    );
+                                return {
+                                  cx: (reflection.x + cursorPosition.x) / 2,
+                                  cy: (reflection.y + cursorPosition.y) / 2,
+                                };
+                              })()}
+                            />
+                          )}
+                        <circle
+                          data-shape-index={index}
+                          data-point-index={keyIndex}
+                          className={"segment"}
+                          data-is-segment={true}
+                          cx={point.x}
+                          cy={point.y}
+                          fill={
+                            (() => {
+                              let isPointInSelectionRectangle;
 
-                    return (
-                      <g key={index}>
-                        <path
-                          d={pointsAsSVGString}
-                          stroke={shape.stroke || "black"}
-                          fill={shape.fill}
+                              if (drawState === DRAW_STATE_SELECTION_SET) {
+                                isPointInSelectionRectangle =
+                                  isPointInRectangle(point, selectionRectangle);
+                              } else if (
+                                drawState === DRAW_STATE_MOVE_SELECTED_SEGMENTS
+                              ) {
+                                let _shapeIndex = 0;
+                                let _pointIndex = 0;
+                                for (shape of shapes) {
+                                  if (index === _shapeIndex) {
+                                    break;
+                                  }
+                                  _shapeIndex++;
+                                  _pointIndex += shape.points.length;
+                                }
+                                return (
+                                  selectedPointIndexes.indexOf(
+                                    _pointIndex + keyIndex
+                                  ) > -1
+                                );
+                              } else {
+                                isPointInSelectionRectangle = false;
+                              }
+
+                              const isPointInCurrentSelection =
+                                drawState === DRAW_STATE_SELECTION_STARTED &&
+                                isPointInRectangle(
+                                  point,
+                                  calculateSelectionRectangle(
+                                    mouseDownCursorPosition,
+                                    cursorPosition
+                                  )
+                                );
+
+                              return (
+                                isPointInSelectionRectangle ||
+                                isPointInCurrentSelection
+                              );
+                            })()
+                              ? "blue"
+                              : "silver"
+                          }
+                          r={SEGMENT_CIRCLE_RADIUS}
+                        />
+                        <line
+                          stroke={"black"}
+                          x1={head.x}
+                          y1={head.y}
+                          x2={point.x}
+                          y2={point.y}
+                          data-is-segment-line={true}
+                          data-shape-index={index}
+                          data-segment-index={keyIndex}
                         />
                       </g>
                     );
-                  })}
-                </svg>
-                <a
-                  href="#"
-                  className={"download-link"}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    const svgImage = document.createElement("img");
-                    svgImage.width = previewSize;
-                    svgImage.height = previewSize;
-                    document.body.appendChild(svgImage);
-                    svgImage.onload = () => {
-                      const canvas = document.createElement("canvas");
-                      canvas.width = svgImage.clientWidth;
-                      canvas.height = svgImage.clientHeight;
-                      const canvasCtx = canvas.getContext("2d");
-                      canvasCtx.drawImage(svgImage, 0, 0);
-                      const imageDataURL = canvas.toDataURL("image/png");
-                      svgImage.parentElement.removeChild(svgImage);
-                      URL.revokeObjectURL(svgImage.src);
-                      const downloadLink = document.createElement("a");
-                      downloadLink.href = imageDataURL;
-                      downloadLink.download = `icon-${previewSize}.png`;
-                      downloadLink.click();
-                    };
-                    svgImage.src = URL.createObjectURL(
-                      new Blob(
-                        [document.getElementById(`preview-${index}`).outerHTML],
-                        {
-                          type: "image/svg+xml",
-                        }
-                      )
-                    );
-                  }}
-                >
-                  download
-                </a>
-              </div>
-            ))}
-          </div>
-
-          <div id="bio">
-            I’m a self-taught full-stack software developer. I code with Python
-            in backend; with Django framework, and other micro frameworks such
-            as Flask. I am experienced in AsyncIO which is a Python equivalent
-            of non-blocking servers such as NodeJS. In frontend, I worked with
-            many libraries and state management tools.
-            <a href="cv.pdf">Resume.</a>
-          </div>
-        </div>
+                    head = point;
+                  }
+                  return lines;
+                })()}
+              </g>
+            );
+          })}
+          {drawState === DRAW_STATE_SELECTION_STARTED &&
+            (() => {
+              const { x, y, width, height } = calculateSelectionRectangle(
+                mouseDownCursorPosition,
+                cursorPosition
+              );
+              return (
+                <rect
+                  x={x}
+                  y={y}
+                  width={width}
+                  height={height}
+                  className={"selection-rectangle"}
+                ></rect>
+              );
+            })()}
+        </svg>
       </div>
-      <footer>Fatih Erikli — 2021 — Creative Commons</footer>
+      {(() => {
+        let _height = 10;
+        return previews.map(({ shapes: shapeIndexes, size }, index) => {
+          const preview = (
+            <Preview
+              shapes={shapes}
+              shapeIndexes={shapeIndexes}
+              size={size}
+              key={index}
+              onRemove={(event) => {
+                event.preventDefault();
+                setPreviews(previews.filter((_, previewIndex) => index !== previewIndex))
+                setDrawState(DRAW_STATE_READY);
+              }}
+              style={{
+                top: _height,
+              }}
+            />
+          );
+          _height += size + 40;
+          return preview;
+        });
+      })()}
     </div>
   );
 }
