@@ -46,7 +46,12 @@ h1 {
   fill: red;
 }
 
+.preview-square:hover .download-link {
+  visibility: visible;
+}
+
 .download-link {
+  visibility: hidden;
   color: gray;
   font-size: 0.9em;
 }

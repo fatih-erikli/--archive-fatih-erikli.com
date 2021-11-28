@@ -1177,9 +1177,10 @@ function Preview({
       >
         {shapesFiltered.map((shape, index) => {
           const pointsAsSVGString = buildSVGPath(
-            shape.points.map(({ x, y }) => ({
+            shape.points.map(({ x, y, isControlPoint }) => ({
               x: x - minX + centerX,
               y: y - minY + centerY,
+              isControlPoint,
             })),
             divider
           );
@@ -1323,9 +1324,13 @@ function App() {
       height: canvasSize.height,
     });
   };
-  console.log(appState);
   return (
     <div
+    onWheel={(event) => {
+      // event.preventDefault();
+      //event.stopPropagation();
+        // console.log(event.deltaX);
+      }}
       tabIndex={0}
       onKeyDown={handleKeyDown(setKeyStates, selectAll)}
       onKeyUp={handleKeyUp(setKeyStates)}
@@ -1425,6 +1430,10 @@ function App() {
           width={canvasSize.width}
           height={canvasSize.height}
           data-is-canvas={true}
+          style={{
+            // background: 'url(icons.png)',
+            // backgroundSize: '500px'
+          }}
         >
           <line
             x1={0}
@@ -1569,7 +1578,7 @@ function App() {
                               );
                             })()
                               ? "blue"
-                              : "transparent"
+                              : head.isControlPoint ? "gray" : "transparent"
                           }
                           r={SEGMENT_CIRCLE_RADIUS}
                         />
